@@ -1,0 +1,674 @@
+﻿import React, { useState } from 'react';
+import type { FinancialItem } from '../types';
+import type { Cadence } from '../utils/financeMath';
+import { calculateMetrics, formatCurrency } from '../utils/financeMath';
+import './ItemGrid.css';
+import CreateItemModal from './CreateItemModal';
+
+interface Props {
+  items: FinancialItem[];
+  baselines?: FinancialItem[];
+  owner: string;
+  isLocked: boolean;
+  onUpdate: (item: FinancialItem, reason?: string) => Promise<{success: boolean, error?: string}>;
+  onRevert: (id: string) => Promise<{success: boolean, error?: string}>;
+  onPromote: (id: string, reason: string) => Promise<{success: boolean, error?: string}>;
+  onApproveBaseline: (id: string) => Promise<{success: boolean, error?: string}>;
+  onRejectBaseline: (id: string) => Promise<{success: boolean, error?: string}>;
+  onCreate: (item: Partial<FinancialItem>) => Promise<{success: boolean, error?: string}>;
+  onDelete: (id: string) => Promise<{success: boolean, error?: string}>;
+  onRequestUnlock: () => void;
+  sessionActor: string | null;
+}
+
+export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpdate, onRevert, onPromote, onApproveBaseline, onRejectBaseline, onCreate, onDelete, onRequestUnlock, sessionActor }: Props) {
+  const [globalCadence, setGlobalCadence] = useState<Cadence>(owner === 'Shae' ? 'Fortnightly' : 'Weekly');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<Partial<FinancialItem>>({});
+  const [editReason, setEditReason] = useState<string>('');
+  
+  const [isCreating, setIsCreating] = useState(false);
+
+  const [saving, setSaving] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(() => {
+        const initial: Record<string, boolean> = {};
+        items.forEach(i => initial[i.category] = true);
+        return initial;
+    });
+  
+  const [historyId, setHistoryId] = useState<string | null>(null);
+  const [confirmRevertId, setConfirmRevertId] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [unlockPromptId, setUnlockPromptId] = useState<string | null>(null);
+  
+  const [promoteId, setPromoteId] = useState<string | null>(null);
+  const [promoteReason, setPromoteReason] = useState<string>('');
+
+  let totalInflowWeekly = 0;
+  let totalOutflowWeekly = 0;
+
+  const allCategories = Array.from(new Set(items.map(i => i.category)));
+  const allRoutes = Array.from(new Set(items.map(i => i.account_route).filter(Boolean)));
+
+  const handleInlineUpdate = async (item: FinancialItem, field: string, value: string) => {
+      // @ts-ignore
+      if (item[field] === value) return;
+      const updated = { ...item, [field]: value };
+      const res = await onUpdate(updated as FinancialItem, `Inline update: ${field}`);
+      if (!res.success) setErrorMsg(res.error || `Failed to update ${field}`);
+  };
+
+  const handleEditClick = (item: FinancialItem) => {
+    setEditingId(item.id);
+    setEditForm({ ...item } as any);
+    setEditReason('');
+    setErrorMsg(null);
+    setHistoryId(null);
+    setPromoteId(null);
+  };
+
+  const handleSave = async (originalItem: FinancialItem) => {
+    setErrorMsg(null);
+    if (editForm.native_amount === undefined || isNaN(Number(editForm.native_amount))) {
+        setErrorMsg('Invalid amount');
+        return;
+    }
+    
+    setSaving(true);
+    
+    const updated = { ...originalItem, ...editForm, native_amount: Number(editForm.native_amount) };
+
+    const res = await onUpdate(updated as FinancialItem, editReason);
+    
+    if (!res.success) {
+        setErrorMsg(res.error || 'Failed to save');
+        setSaving(false);
+    } else {
+        setSaving(false);
+        setEditingId(null);
+    }
+  };
+
+
+
+  const executePromote = async (id: string) => {
+      if (!promoteReason.trim()) {
+          setErrorMsg('Audit note is strictly required for baseline promotion.');
+          return;
+      }
+      const res = await onPromote(id, promoteReason);
+      if (!res.success) setErrorMsg(res.error || 'Failed to promote');
+      else {
+          setPromoteId(null);
+          setPromoteReason('');
+          setErrorMsg(null);
+      }
+  };
+
+
+  const executeRevert = async (id: string) => {
+      const res = await onRevert(id);
+      if (!res.success) setErrorMsg(res.error || 'Failed to revert');
+      else {
+          setConfirmRevertId(null);
+          setEditingId(null);
+      }
+  };
+
+  const executeDelete = async (id: string) => {
+      const res = await onDelete(id);
+      if (!res.success) setErrorMsg(res.error || 'Failed to delete');
+      else setDeleteConfirmId(null);
+  };
+
+    const getStatusColor = (status: string) => {
+        if (!status) return { bg: '#f1f5f9', text: '#475569' };
+        if (status === 'Verified') return { bg: '#dcfce7', text: '#166534' };
+        if (status.includes('Shae')) return { bg: '#fee2e2', text: '#991b1b' };
+        if (status.includes('Stephen')) return { bg: '#fef08a', text: '#854d0e' };
+        return { bg: '#f1f5f9', text: '#475569' };
+    };
+
+    const getCategoryStyle = (cat: string) => {
+        const lower = (cat || '').toLowerCase();
+        if (lower.includes('income')) return { bg: '#dcfce7', text: '#166534', emoji: '💰' };
+        if (lower.includes('housing')) return { bg: '#e0f2fe', text: '#0369a1', emoji: '🏠' };
+        if (lower.includes('food')) return { bg: '#ffedd5', text: '#c2410c', emoji: '🍔' };
+        if (lower.includes('utilities')) return { bg: '#fef3c7', text: '#b45309', emoji: '⚡' };
+        if (lower.includes('insurances')) return { bg: '#e0e7ff', text: '#4338ca', emoji: '🛡️' };
+        if (lower.includes('health')) return { bg: '#fce7f3', text: '#be185d', emoji: '⚕️' };
+        if (lower.includes('grooming')) return { bg: '#fae8ff', text: '#a21caf', emoji: '✂️' };
+        if (lower.includes('debt')) return { bg: '#fee2e2', text: '#b91c1c', emoji: '💳' };
+        if (lower.includes('personal')) return { bg: '#f3e8ff', text: '#7e22ce', emoji: '🛍️' };
+        if (lower.includes('lifestyle')) return { bg: '#ccfbf1', text: '#0f766e', emoji: '🥂' };
+        if (lower.includes('living')) return { bg: '#ccfbf1', text: '#0f766e', emoji: '🛒' };
+        if (lower.includes('transport')) return { bg: '#f1f5f9', text: '#475569', emoji: '🚗' };
+        if (lower.includes('subscription')) return { bg: '#f3f4f6', text: '#1f2937', emoji: '📺' };
+        if (lower.includes('pet')) return { bg: '#ffedd5', text: '#ea580c', emoji: '🐶' };
+        if (lower.includes('transfer') || lower.includes('savings')) return { bg: '#dbeafe', text: '#1d4ed8', emoji: '🏦' };
+        return { bg: '#e2e8f0', text: '#334155', emoji: '📁' };
+    };
+
+    const getRouteStyle = (route: string) => {
+        const lower = (route || '').toLowerCase();
+        
+        // Internal Transfers (Nuanced)
+        if (lower.includes('mq joint')) return { bg: '#e2e8f0', text: '#0f172a' }; // Lighter MQ
+        if (lower.includes('mq save') || lower.includes('mq savings')) return { bg: '#cbd5e1', text: '#000000' }; // Darker MQ
+        
+        // Brand Colors
+        if (lower.includes('ing')) return { bg: '#ffedd5', text: '#ea580c' }; // ING Orange
+        if (lower.includes('boq')) return { bg: '#dbeafe', text: '#1d4ed8' }; // BOQ Royal Blue
+        if (lower.includes('macquarie') || lower.includes('mq')) return { bg: '#f1f5f9', text: '#000000' }; // MQ Black/Grey
+        
+        if (lower.includes('up')) return { bg: '#fef08a', text: '#b45309' }; // UP Yellow
+        if (lower.includes('commbank') || lower.includes('cba')) return { bg: '#fef9c3', text: '#854d0e' }; // CBA Yellow
+        if (lower.includes('ubank')) return { bg: '#ccfbf1', text: '#0f766e' }; // UBank Teal
+        if (lower.includes('westpac')) return { bg: '#fee2e2', text: '#b91c1c' }; // Westpac Red
+        
+        return { bg: '#f3e8ff', text: '#7e22ce' }; // Default Purple
+    };
+
+    const renderRow = (item: FinancialItem) => {
+        const metrics = calculateMetrics(item.native_amount, item.cadence);
+        const isNewItem = !baselines.some(b => b.id === item.id);
+        const baselineItem = baselines.find(b => b.id === item.id) || item;
+        const baselineAnnual = calculateMetrics(baselineItem.native_amount, baselineItem.cadence).annual;
+
+        const isDrifted = baselineItem && (baselineItem.native_amount !== item.native_amount || baselineItem.cadence !== item.cadence || baselineItem.category !== item.category || baselineItem.description !== item.description || baselineItem.verification_status !== item.verification_status || baselineItem.account_route !== item.account_route);
+        // @ts-ignore
+        const auditTrail = [...(item.audit_trail || [])].reverse();
+
+        const statusColors = getStatusColor(item.verification_status || '');
+        const catStyle = getCategoryStyle(item.category || '');
+        const routeStyle = getRouteStyle(item.account_route || '');
+
+        
+        
+        let editDrawer = null;
+        if (editingId === item.id) {
+            const proposedAnnual = calculateMetrics(Number(editForm.native_amount) || 0, (editForm.cadence || 'Weekly') as Cadence).annual;
+            const deltaAnnual = proposedAnnual - baselineAnnual;
+            const percentChange = baselineAnnual === 0 ? (deltaAnnual > 0 ? 100 : 0) : (deltaAnnual / baselineAnnual) * 100;
+            const isAnomaly = Math.abs(percentChange) >= 15 && Math.abs(deltaAnnual) >= 120;
+            
+            
+editDrawer = (
+                <tr key={`edit-${item.id}`} style={{position: 'relative', zIndex: 10}}>
+                    <td colSpan={7} style={{padding: '0 1.5rem 1.5rem 1.5rem'}}>
+                        <div style={{background: 'var(--bg-table-row-alt)', borderRadius: '0 0 12px 12px', border: '1px solid var(--border-neutral)', borderTop: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', overflow: 'hidden'}}>
+                            <div style={{padding: '1.5rem 1.5rem 0 1.5rem'}}>
+                      
+                              {/* Top Bar */}
+                              <div style={{display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '1.5rem'}}>
+                                  <span style={{background: '#cbd5e1', color: 'var(--text-main)', padding: '4px 8px', borderRadius: '4px', fontWeight: 700, fontSize: '0.8rem', fontFamily: 'monospace'}}>#{item.id}</span>
+                                  <select 
+                                      value={editForm.category || ''} 
+                                      onChange={e => setEditForm({...editForm, category: e.target.value})} 
+                                      style={{width: '180px', padding: '8px', border: '1px solid var(--border-neutral)', borderRadius: '6px', fontWeight: 600}}
+                                  >
+                                      {allCategories.map(c => <option key={c as string} value={c as string}>{c as string}</option>)}
+                                  </select>
+                                  <input 
+                                      type="text" 
+                                      value={editForm.description || ''} 
+                                      onChange={e => setEditForm({...editForm, description: e.target.value})} 
+                                      style={{flex: 1, padding: '8px 12px', border: '1px solid var(--border-neutral)', borderRadius: '6px', fontWeight: 600, fontSize: '1rem'}} 
+                                      placeholder="Item Description" 
+                                  />
+                              </div>
+                              
+                              {/* Middle Bar: Math */}
+                              <div style={{display: 'flex', gap: '1rem', marginBottom: '1.5rem'}}>
+                                  <div style={{background: 'var(--bg-card)', border: '1px solid var(--border-neutral)', padding: '1rem', borderRadius: '8px', flex: 1}}>
+                                      <div style={{fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px'}}>Baseline Source</div>
+                                      <div style={{fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)'}}>{formatCurrency(baselineItem.native_amount)} <span style={{fontSize:'0.9rem', color:'#94a3b8', fontWeight:500}}>/ {baselineItem.cadence}</span></div>
+                                      <div style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px'}}>({formatCurrency(baselineAnnual)} / year)</div>
+                                  </div>
+                                  
+                                  <div style={{background: 'var(--accent-secondary)', border: '1px solid var(--accent-primary)', padding: '1rem', borderRadius: '8px', flex: 1.5}}>
+                                      <div style={{fontSize: '0.75rem', color: '#1d4ed8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px'}}>Proposed Input</div>
+                                      <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+                                          <span style={{fontSize: '1.25rem', fontWeight: 700, color: '#1e3a8a'}}>$</span>
+                                          <input type="number" value={editForm.native_amount || 0} onChange={e => setEditForm({...editForm, native_amount: parseFloat(e.target.value) || 0})} style={{width: '120px', padding: '6px', fontSize: '1.1rem', fontWeight: 600, border: '1px solid #93c5fd', borderRadius: '4px'}} />
+                                          <select value={editForm.cadence} onChange={e => setEditForm({...editForm, cadence: e.target.value as Cadence})} style={{padding: '6px', fontSize: '1.1rem', fontWeight: 600, border: '1px solid #93c5fd', borderRadius: '4px'}}>
+                                              {['Weekly', 'Fortnightly', 'Monthly', 'Quarterly', 'Semi-Annual', 'Annual'].map(c => <option key={c} value={c}>{c}</option>)}
+                                          </select>
+                                      </div>
+                                  </div>
+                                  
+                                  <div style={{background: 'var(--bg-card)', border: '1px solid var(--border-neutral)', padding: '1rem', borderRadius: '8px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                      <div style={{fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px'}}>Variance</div>
+                                      <div style={{color: isAnomaly ? '#e11d48' : '#059669', fontWeight: 800, fontSize: '1.25rem'}}>
+                                          {deltaAnnual > 0 ? '+' : ''}{percentChange.toFixed(1)}% 
+                                      </div>
+                                      <div style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px'}}>({deltaAnnual > 0 ? '+' : ''}{formatCurrency(deltaAnnual)} / yr)</div>
+                                  </div>
+                              </div>
+  
+                              {/* Bottom Bar: Metadata */}
+                              <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1.5rem'}}>
+                                  <div>
+                                      <label style={{display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase'}}>Verification</label>
+                                      <select value={editForm.verification_status || ''} onChange={e => setEditForm({...editForm, verification_status: e.target.value})} style={{width: '100%', padding: '8px', border: '1px solid var(--border-neutral)', borderRadius: '6px', fontWeight: 600}}>
+                                          <option value="Verified">Verified</option>
+                                          <option value="Needs Verification with Shae">Needs Verification with Shae</option>
+                                          <option value="Needs Verification with Stephen">Needs Verification with Stephen</option>
+                                      </select>
+                                  </div>
+                                  <div>
+                                      <label style={{display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase'}}>Account Route</label>
+                                      <select value={editForm.account_route || ''} onChange={e => setEditForm({...editForm, account_route: e.target.value})} style={{width: '100%', padding: '8px', border: '1px solid var(--border-neutral)', borderRadius: '6px', fontWeight: 600}}>
+                                          <option value="">None</option>
+                                          {allRoutes.map(r => <option key={r as string} value={r as string}>{r as string}</option>)}
+                                      </select>
+                                  </div>
+                                  <div>
+                                      <label style={{display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase'}}>Source Authority</label>
+                                      <input type="text" value={editForm.source_authority || ''} onChange={e => setEditForm({...editForm, source_authority: e.target.value})} style={{width: '100%', padding: '8px', border: '1px solid var(--border-neutral)', borderRadius: '6px'}} placeholder="e.g., Bank Statement" />
+                                  </div>
+                              </div>
+                              
+                              <div style={{marginBottom: '1.5rem'}}>
+                                  <textarea value={editForm.notes || ''} onChange={e => setEditForm({...editForm, notes: e.target.value})} style={{width: '100%', padding: '12px', minHeight: '60px', border: '1px solid var(--border-neutral)', borderRadius: '6px', fontFamily: 'inherit'}} placeholder="General context or notes about this item..." />
+                              </div>
+
+                            {isAnomaly && <div style={{color: 'var(--negative-text)', fontSize: '0.9rem', marginBottom: '8px', fontWeight: 600}}>âš ï¸ Anomaly detected (â‰¥15% & â‰¥$120/yr). Audit note strictly required.</div>}
+                            <input 
+                                type="text" 
+                                placeholder={isAnomaly ? "Mandatory Audit Note (Why did this amount change?)..." : "Optional Audit Note..."} 
+                                value={editReason} 
+                                onChange={e => setEditReason(e.target.value)} 
+                                style={{width: '100%', padding: '12px', fontSize: '1rem', border: isAnomaly && !editReason.trim() ? '2px solid #e11d48' : '1px solid #cbd5e1'}} 
+                            />
+                        </div>
+
+                        {errorMsg && <div style={{color: 'var(--negative-text)', marginBottom: '1rem', padding: '12px', background: '#fff1f2', borderRadius: '6px', border: '1px solid #fecdd3'}}>{errorMsg}</div>}
+
+                        <div style={{display: 'flex', gap: '12px', justifyContent: 'space-between', background: 'transparent', padding: '1rem 1.5rem', margin: '0', borderTop: '1px solid var(--border-neutral)', alignItems: 'center'}}>
+                            <div style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
+                                <button className="action-btn primary" onClick={() => handleSave(item)} disabled={saving} style={{background: '#2563eb', color: 'white', padding: '8px 16px', borderRadius: '6px', fontWeight: 600, fontSize: '0.9rem', border: 'none', cursor: 'pointer', boxShadow: '0 1px 2px rgba(0,0,0,0.1)'}}>{saving ? 'Saving...' : 'Save to JSON'}</button>
+                                <button className="action-btn" onClick={() => setEditingId(null)} style={{background: 'var(--bg-card)', color: 'var(--text-muted)', padding: '8px 16px', borderRadius: '6px', fontWeight: 600, fontSize: '0.9rem', border: '1px solid var(--border-neutral)', cursor: 'pointer'}}>Cancel</button>
+                                
+                                {!isNewItem && (
+                                    confirmRevertId === item.id ? (
+                                        <div style={{display: 'flex', gap: '8px', marginLeft: '12px', alignItems: 'center', background: '#fffbeb', padding: '6px 12px', borderRadius: '6px', border: '1px solid #fde68a'}}>
+                                            <span style={{color: '#d97706', fontSize: '0.85rem', fontWeight: 600}}>Revert?</span>
+                                            <button className="action-btn" onClick={() => executeRevert(item.id)} style={{background: '#f59e0b', color: 'white', padding: '4px 12px', borderRadius: '4px', border: 'none', fontWeight: 600, cursor: 'pointer'}}>Confirm</button>
+                                            <button className="action-btn" onClick={() => setConfirmRevertId(null)} style={{background: 'transparent', color: '#92400e', border: 'none', fontWeight: 600, cursor: 'pointer'}}>Cancel</button>
+                                        </div>
+                                    ) : (
+                                        <button className="action-btn" onClick={() => setConfirmRevertId(item.id)} style={{marginLeft: '12px', color: '#d97706', background: 'var(--bg-card)', borderColor: '#fcd34d', padding: '8px 16px', borderRadius: '6px', fontWeight: 600, cursor: 'pointer'}}>⏪ Revert to Baseline</button>
+                                    )
+                                )}
+                            </div>
+                            <div>
+                                {deleteConfirmId === item.id ? (
+                                    <div style={{display: 'flex', gap: '8px', alignItems: 'center', background: '#fff1f2', padding: '6px 12px', borderRadius: '6px', border: '1px solid #fecdd3'}}>
+                                        <span style={{color: '#e11d48', fontSize: '0.85rem', fontWeight: 600}}>Are you sure?</span>
+                                        <button className="action-btn" onClick={() => executeDelete(item.id)} style={{background: '#e11d48', color: 'white', padding: '4px 12px', borderRadius: '4px', border: 'none', fontWeight: 600, cursor: 'pointer'}}>Yes, Delete</button>
+                                        <button className="action-btn" onClick={() => setDeleteConfirmId(null)} style={{background: 'transparent', color: '#9f1239', border: 'none', fontWeight: 600, cursor: 'pointer'}}>Cancel</button>
+                                    </div>
+                                ) : (
+                                    <button className="action-btn" onClick={() => setDeleteConfirmId(item.id)} style={{color: '#e11d48', background: 'var(--bg-card)', borderColor: '#fecaca', padding: '8px 16px', borderRadius: '6px', fontWeight: 600, cursor: 'pointer'}}>🗑️ Delete Item</button>
+                                )}
+                            </div>
+                        </div>
+                        </div>
+                    </td>
+                </tr>
+            );
+        }
+
+        return (
+          <>
+          <tr key={item.id} style={{background: item.pending_baseline_promotion ? 'var(--bg-table-row-alt)' : isDrifted ? 'var(--bg-table-row-drifted)' : 'transparent', borderLeft: item.pending_baseline_promotion ? '4px solid var(--accent-primary)' : 'none'}}>
+            <td style={{fontWeight: 500}}>
+                <div style={{marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                    <span style={{fontSize: '0.95rem'}}>{item.description}</span>
+                </div>
+                <div style={{display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap'}}>
+                    {isLocked ? (
+                        <>
+                            <span style={{background: catStyle.bg, color: catStyle.text, padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 600, border: `1px solid ${catStyle.text}30`}}>
+                                {catStyle.emoji} {item.category || 'Unknown'}
+                            </span>
+                            <span style={{background: statusColors.bg, color: statusColors.text, padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 600, border: `1px solid ${statusColors.text}30`}}>
+                                {item.verification_status || 'Unverified'}
+                            </span>
+                        </>
+                    ) : (
+                        <>
+                            <select 
+                                value={item.category || ''} 
+                                onChange={(e) => handleInlineUpdate(item, 'category', e.target.value)}
+                                style={{appearance: 'none', background: catStyle.bg, color: catStyle.text, padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 600, border: `1px solid ${catStyle.text}30`, cursor: 'pointer'}}
+                            >
+                                <option disabled value="">-- Category --</option>
+                                {allCategories.map(c => <option key={c as string} value={c as string}>{c as string}</option>)}
+                            </select>
+
+                            <select 
+                                value={item.verification_status || ''} 
+                                onChange={(e) => handleInlineUpdate(item, 'verification_status', e.target.value)}
+                                style={{appearance: 'none', background: statusColors.bg, color: statusColors.text, padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 600, border: `1px solid ${statusColors.text}40`, cursor: 'pointer'}}
+                            >
+                                <option disabled value="">-- Status --</option>
+                                <option value="Verified">Verified</option>
+                                <option value="Needs Verification with Shae">Needs Verification with Shae</option>
+                                <option value="Needs Verification with Stephen">Needs Verification with Stephen</option>
+                            </select>
+                        </>
+                    )}
+                </div>
+                {(item.source_authority || item.notes) && (
+                    <div style={{fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '6px', lineHeight: 1.4}}>
+                        {item.source_authority && <div><strong>Source:</strong> {item.source_authority}</div>}
+                        {item.notes && <div><strong>Note:</strong> {item.notes}</div>}
+                    </div>
+                )}
+            </td>
+            <td className="native-col" style={{position: 'relative'}} title={isLocked ? 'Locked' : 'Edit Math'}>
+                <div onClick={() => !isLocked && handleEditClick(item)} style={{cursor: isLocked ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center'}}>
+                    {formatCurrency(item.native_amount)} <span style={{fontSize: '0.8rem', color: 'var(--text-muted)', marginLeft: '4px'}}>{item.cadence}</span>
+                    {!isLocked && <span style={{color: '#3b82f6', fontSize: '0.8rem', marginLeft: '4px'}}>{'\u270F\uFE0F'}</span>}
+                </div>
+                {/* Account Route Pill */}
+                <div style={{marginTop: '6px'}}>
+                    {isLocked ? (
+                        item.account_route && (
+                            <span style={{display: 'inline-block', background: routeStyle.bg, color: routeStyle.text, padding: '2px 8px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 600, border: `1px solid ${routeStyle.text}40`}}>
+                                  🛣️ {item.account_route}
+                              </span>
+                        )
+                    ) : (
+                        <select 
+                            value={item.account_route || ''} 
+                            onChange={(e) => handleInlineUpdate(item, 'account_route', e.target.value)}
+                            style={{appearance: 'none', display: 'inline-block', background: routeStyle.bg, color: routeStyle.text, padding: '2px 8px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 600, border: `1px solid ${routeStyle.text}40`, cursor: 'pointer'}}
+                        >
+                            <option value="">Set Route...</option>
+                            {allRoutes.map(r => <option key={r as string} value={r as string}>{r as string}</option>)}
+                        </select>
+                    )}
+                </div>
+            </td>
+            <td className="derived" style={{width: '90px'}}>{formatCurrency(metrics.weekly)}</td>
+            <td className="derived" style={{width: '90px'}}>{formatCurrency(metrics.fortnightly)}</td>
+            <td className="derived" style={{width: '90px'}}>{formatCurrency(metrics.monthly)}</td>
+            <td className="derived" style={{width: '90px'}}>{formatCurrency(metrics.annual)}</td>
+            <td style={{width: '140px'}}>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '6px'}}>
+                    {isDrifted && !isLocked && (
+                        <div style={{display: 'flex', flexWrap: 'wrap', gap: '4px'}}>
+                            {confirmRevertId === item.id ? (
+                                <span style={{background: '#e11d48', color: 'white', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600}}>
+                                    Sure? <button onClick={() => executeRevert(item.id)} style={{background: 'none', border:'none', color:'white', cursor:'pointer', fontWeight:'bold', padding: '0 4px'}}>Yes</button> / <button onClick={() => setConfirmRevertId(null)} style={{background: 'none', border:'none', color:'white', cursor:'pointer', padding: '0 4px'}}>No</button>
+                                </span>
+                            ) : (
+                                <button className="action-btn" onClick={() => { setConfirmRevertId(item.id); setPromoteId(null); setHistoryId(null); }} title="Revert to baseline" style={{fontSize: '0.75rem', padding: '4px 8px'}}>⏪ Revert</button>
+                            )}
+                            {item.pending_baseline_promotion ? (
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '4px'}}>
+                                {sessionActor !== item.pending_baseline_promotion.requested_by && sessionActor !== 'Test' ? (
+                                    <>
+                                        <button onClick={() => onApproveBaseline(item.id)} style={{background: 'var(--positive-text)', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer'}}>Approve</button>
+                                        <button onClick={() => onRejectBaseline(item.id)} style={{background: 'var(--negative-text)', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer'}}>Reject</button>
+                                    </>
+                                ) : (
+                                    <span style={{fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600}}>Awaiting Approval</span>
+                                )}
+                            </div>
+                        ) : (
+                            <button className="action-btn" onClick={() => { setPromoteId(promoteId === item.id ? null : item.id); setConfirmRevertId(null); setHistoryId(null); }} title="Update Master Baseline" style={{fontSize: '0.75rem', padding: '4px 8px'}}>⬆️ Update Baseline</button>
+                        )}
+                        </div>
+                    )}
+                    {isLocked && sessionActor === owner && (
+                        unlockPromptId === item.id ? (
+                            <div style={{background: 'var(--bg-card)', padding: '6px', borderRadius: '6px', border: '1px solid var(--border-neutral)', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', display: 'flex', flexDirection: 'column', gap: '6px', zIndex: 10}}>
+                                <span style={{fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', textAlign: 'center'}}>Unlock Dashboard to edit?</span>
+                                <div style={{display: 'flex', gap: '4px'}}>
+                                    <button onClick={() => { onRequestUnlock(); setEditingId(item.id); setEditForm({...item}); setUnlockPromptId(null); }} style={{background: '#3b82f6', border: 'none', color: 'white', borderRadius: '4px', padding: '4px', flex: 1, cursor: 'pointer', fontWeight: 600, fontSize: '0.75rem'}}>Yes, Unlock</button>
+                                    <button onClick={() => setUnlockPromptId(null)} style={{background: '#f1f5f9', border: '1px solid var(--border-neutral)', color: 'var(--text-muted)', borderRadius: '4px', padding: '4px', flex: 1, cursor: 'pointer', fontWeight: 600, fontSize: '0.75rem'}}>Cancel</button>
+                                </div>
+                            </div>
+                        ) : (
+                            <button className="action-btn" onClick={() => setUnlockPromptId(item.id)} title="Edit item" style={{fontSize: '0.75rem', padding: '4px 8px'}}>✏️ Edit</button>
+                        )
+                    )}
+                    
+                    {auditTrail.length > 0 && (
+                        <button className="action-btn" onClick={() => { setHistoryId(historyId === item.id ? null : item.id); setPromoteId(null); setConfirmRevertId(null); }} style={{fontSize: '0.75rem', padding: '4px 8px', background: '#eff6ff', borderColor: 'var(--accent-secondary)'}}>
+                            {historyId === item.id ? 'Hide History' : `History (${auditTrail.length})`}
+                        </button>
+                    )}
+                    {!isDrifted && (() => {
+                        const amountLogs = auditTrail.filter((l: any) => l.from_amount !== undefined || l.field === 'native_amount' || l.field === 'baseline_promotion');
+                        let dateStr = "Original";
+                        if (amountLogs.length > 0) {
+                            const lastLog = amountLogs[amountLogs.length - 1];
+                            dateStr = new Date(lastLog.timestamp).toLocaleDateString();
+                        }
+                        return <span style={{fontSize: '0.8rem', color: 'var(--positive-text)', fontWeight: 600}}>Aligned ({dateStr})</span>;
+                    })()}
+                </div>
+            </td>
+          </tr>
+          
+          {/* Inline Promote Row */}
+          {promoteId === item.id && !isLocked && (
+              <tr style={{background: '#ecfdf5'}}>
+                  <td colSpan={7} style={{padding: '1.5rem'}}>
+                      <strong style={{color: 'var(--positive-text)'}}>Updating Master Baseline</strong>
+                      <div style={{fontSize: '0.9rem', color: 'var(--positive-text)', marginBottom: '12px'}}>This will permanently update the master baseline with these new figures.</div>
+                      <div style={{display: 'flex', gap: '12px'}}>
+                          <input type="text" placeholder="Mandatory Audit Note (Why is this permanent?)" value={promoteReason} onChange={e => setPromoteReason(e.target.value)} style={{flexGrow: 1}} />
+                          <button className="action-btn" style={{background: '#059669', color: 'white', borderColor: '#059669'}} onClick={() => executePromote(item.id)}>Confirm Update</button>
+                          <button className="action-btn" onClick={() => setPromoteId(null)}>Cancel</button>
+                      </div>
+                      {errorMsg && <div style={{color: 'var(--negative-text)', marginTop: '8px', fontSize: '0.9rem', fontWeight: 600}}>{errorMsg}</div>}
+                  </td>
+              </tr>
+          )}
+
+          {/* Inline History Drawer */}
+          {historyId === item.id && auditTrail.length > 0 && (
+              <tr style={{background: 'var(--bg-table-header)'}}>
+                  <td colSpan={7} style={{padding: '1.5rem', borderLeft: '4px solid #3b82f6'}}>
+                      <strong style={{color: 'var(--text-main)', fontSize: '1.1rem'}}>Forensic Audit Trail</strong>
+                      <ul style={{fontSize: '0.9rem', margin: '12px 0 0 0', paddingLeft: '24px', color: 'var(--text-muted)', lineHeight: '1.6'}}>
+                          {auditTrail.map((log: any, idx: number) => {
+                              const fromStr = log.from === undefined ? 'None' : log.from;
+                              const toStr = log.to === undefined ? 'None' : log.to;
+                              const isMetaChange = log.from !== undefined || log.to !== undefined;
+                              
+                              let actionText = log.reason || 'System update';
+                              if (log.field === 'baseline_promotion') actionText = `Promoted to Baseline: "${log.reason || ''}"`;
+                              else if ((log.reason || '').startsWith('Inline update:')) actionText = 'Updated inline';
+
+                              return (
+                                  <li key={idx} style={{marginBottom: '8px'}}>
+                                      <span style={{color: 'var(--text-muted)'}}>{new Date(log.timestamp).toLocaleString()}</span> â€” 
+                                      <strong style={{color: 'var(--text-main)'}}> {log.actor}</strong>: {actionText} 
+                                      {log.from_amount !== undefined && <span style={{color: 'var(--text-muted)', marginLeft: '8px'}}>[$ {log.from_amount} &rarr; $ {log.to_amount}]</span>}
+                                      {isMetaChange && <span style={{color: 'var(--text-muted)', marginLeft: '8px'}}>[{fromStr} &rarr; {toStr}]</span>}
+                                  </li>
+                              );
+                          })}
+                      </ul>
+                  </td>
+              </tr>
+          )}
+                    
+                    
+          {editDrawer}
+          </>
+        );
+    };
+
+    const getTier = (cat: string) => {
+        const lower = (cat || '').toLowerCase();
+        if (lower.includes('income')) return '1. Income';
+        if (lower.includes('housing') || lower.includes('utilities') || lower.includes('debt')) return '2. Core Survival & Fixed';
+        if (lower.includes('health') || lower.includes('insurance') || lower.includes('pet') || lower.includes('transport')) return '3. Health & Maintenance';
+        if (lower.includes('saving') || lower.includes('transfer')) return '4. Savings & Goals';
+        return '5. Lifestyle & Discretionary';
+    };
+
+    let totalIncome = 0;
+    let totalCore = 0;
+    let totalSavings = 0;
+    let totalLifestyle = 0;
+
+    items.forEach(item => {
+        const metrics = calculateMetrics(item.native_amount, item.cadence);
+        const tier = getTier(item.category);
+        if (tier === '1. Income') totalIncome += metrics.weekly;
+        else if (tier === '2. Core Survival & Fixed' || tier === '3. Health & Maintenance') totalCore += metrics.weekly;
+        else if (tier === '4. Savings & Goals') totalSavings += metrics.weekly;
+        else if (tier === '5. Lifestyle & Discretionary') totalLifestyle += metrics.weekly;
+    });
+
+    let displayMultiplier = 1;
+    if (globalCadence === 'Weekly') displayMultiplier = 1;
+    if (globalCadence === 'Fortnightly') displayMultiplier = 2;
+    if (globalCadence === 'Monthly') displayMultiplier = 52 / 12;
+    if (globalCadence === 'Quarterly') displayMultiplier = 13;
+    if (globalCadence === 'Semi-Annual') displayMultiplier = 26;
+    if (globalCadence === 'Annual') displayMultiplier = 52;
+    
+    const label = globalCadence;
+    const unallocatedSurplus = totalIncome - totalCore - totalSavings - totalLifestyle;
+
+    
+    const toggleGroup = (groupKey: string) => {
+        setExpandedGroups(prev => ({ ...prev, [groupKey]: !prev[groupKey] }));
+    };
+
+    const renderCategoryGroup = (groupTitle: string, groupItems: FinancialItem[]) => {
+        if (groupItems.length === 0) return null;
+        const isExpanded = expandedGroups[groupTitle];
+        const { emoji } = getCategoryStyle(groupTitle);
+        const title = groupTitle.toLowerCase() === 'pet' ? 'Lola (Pet)' : groupTitle;
+
+        const tWk = groupItems.reduce((acc, i) => acc + calculateMetrics(i.native_amount, i.cadence).weekly, 0);
+        const tFn = groupItems.reduce((acc, i) => acc + calculateMetrics(i.native_amount, i.cadence).fortnightly, 0);
+        const tMo = groupItems.reduce((acc, i) => acc + calculateMetrics(i.native_amount, i.cadence).monthly, 0);
+        const tYr = groupItems.reduce((acc, i) => acc + calculateMetrics(i.native_amount, i.cadence).annual, 0);
+
+        return (
+            <React.Fragment key={groupTitle}>
+                <tr onClick={() => toggleGroup(groupTitle)} style={{cursor: 'pointer', background: 'var(--bg-table-row)', borderBottom: '1px solid var(--border-neutral)'}}>
+                    <td style={{padding: '0.75rem 1.5rem', fontWeight: 600, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                        <span style={{color: 'var(--text-muted)', fontSize: '0.8rem', width: '16px', display: 'inline-block'}}>{isExpanded ? '▼' : '▶'}</span>
+                        <span style={{fontSize: '1.2rem'}}>{emoji}</span> 
+                        <span>{title}</span>
+                        <span style={{marginLeft: '8px', background: 'var(--bg-table-row-alt)', color: 'var(--text-muted)', padding: '2px 8px', borderRadius: '12px', fontSize: '0.7rem', border: '1px solid var(--border-neutral)'}}>{groupItems.length} item{groupItems.length !== 1 && 's'}</span>
+                    </td>
+                    <td style={{color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600, textAlign: 'right', paddingRight: '1.5rem'}}></td>
+                    <td className="derived" style={{background: 'var(--bg-table-row-alt)', fontWeight: 600}}>{formatCurrency(tWk)}</td>
+                    <td className="derived" style={{background: 'var(--bg-table-row-alt)', fontWeight: 600}}>{formatCurrency(tFn)}</td>
+                    <td className="derived" style={{background: 'var(--bg-table-row-alt)', fontWeight: 600}}>{formatCurrency(tMo)}</td>
+                    <td className="derived" style={{background: 'var(--bg-table-row-alt)', fontWeight: 600}}>{formatCurrency(tYr)}</td>
+                    <td style={{background: 'var(--bg-table-row-alt)'}} />
+                </tr>
+                {isExpanded && groupItems.map(renderRow)}
+            </React.Fragment>
+        );
+    };
+
+    return (
+        <div className="grid-container">
+        <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '-1rem'}}>
+            <select value={globalCadence} onChange={e => setGlobalCadence(e.target.value as Cadence)} style={{padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-neutral)', fontWeight: 600, color: '#3b82f6', background: 'var(--bg-card)', cursor: 'pointer', zIndex: 10, position: 'relative'}}>
+                <option value="Weekly">Weekly View</option>
+                <option value="Fortnightly">Fortnightly View</option>
+                <option value="Monthly">Monthly View</option>
+                <option value="Annual">Annual View</option>
+            </select>
+        </div>
+        <div className="summary-cards" style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1rem', marginBottom: '2rem'}}>
+            <div className="card" style={{padding: '1rem', background: 'var(--bg-card)', borderRadius: '8px', border: '1px solid var(--border-neutral)'}}>
+                <h3 style={{fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0, textTransform: 'uppercase'}}>Total Income</h3>
+                <p className="positive" style={{fontSize: '1.4rem', margin: '8px 0 0', fontWeight: 700}}>{formatCurrency(totalIncome * displayMultiplier)}</p>
+            </div>
+            <div className="card" style={{padding: '1rem', background: 'var(--bg-card)', borderRadius: '8px', border: '1px solid var(--border-neutral)'}}>
+                <h3 style={{fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0, textTransform: 'uppercase'}}>Core & Fixed</h3>
+                <p className="negative" style={{fontSize: '1.4rem', margin: '8px 0 0', fontWeight: 700}}>{formatCurrency(totalCore * displayMultiplier)}</p>
+            </div>
+            <div className="card" style={{padding: '1rem', background: 'var(--bg-card)', borderRadius: '8px', border: '1px solid var(--border-neutral)'}}>
+                <h3 style={{fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0, textTransform: 'uppercase'}}>Savings & Goals</h3>
+                <p style={{fontSize: '1.4rem', margin: '8px 0 0', fontWeight: 700, color: '#0284c7'}}>{formatCurrency(totalSavings * displayMultiplier)}</p>
+            </div>
+            <div className="card" style={{padding: '1rem', background: 'var(--bg-card)', borderRadius: '8px', border: '1px solid var(--border-neutral)'}}>
+                <h3 style={{fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0, textTransform: 'uppercase'}}>Lifestyle</h3>
+                <p style={{fontSize: '1.4rem', margin: '8px 0 0', fontWeight: 700, color: '#d946ef'}}>{formatCurrency(totalLifestyle * displayMultiplier)}</p>
+            </div>
+            <div className="card" style={{padding: '1rem', background: unallocatedSurplus >= 0 ? '#dcfce7' : '#fee2e2', borderRadius: '8px', border: `1px solid ${unallocatedSurplus >= 0 ? '#4ade80' : '#f87171'}`}}>
+                <h3 style={{fontSize: '0.8rem', color: unallocatedSurplus >= 0 ? '#166534' : '#991b1b', margin: 0, textTransform: 'uppercase'}}>Unallocated</h3>
+                <p style={{fontSize: '1.4rem', margin: '8px 0 0', fontWeight: 700, color: unallocatedSurplus >= 0 ? '#166534' : '#991b1b'}}>{formatCurrency(unallocatedSurplus * displayMultiplier)}</p>
+            </div>
+        </div>
+        <div>
+            {!isLocked && !isCreating && (
+                <div style={{padding: '1rem', background: 'var(--bg-card)', border: '1px solid var(--border-neutral)', borderRadius: '12px', marginBottom: '1.5rem', textAlign: 'left', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'}}>
+                    <button className="action-btn primary" onClick={() => setIsCreating(true)}>+ Add New Row</button>
+                </div>
+            )}
+            <datalist id="routes-list">
+                {allRoutes.map(r => <option key={r as string} value={r as string} />)}
+            </datalist>
+            {(() => {
+                    const getTier = (cat: string) => {
+                        const lower = (cat || '').toLowerCase();
+                        if (lower.includes('income')) return '1. Income';
+                        if (lower.includes('housing') || lower.includes('utilities') || lower.includes('debt')) return '2. Core Survival & Fixed';
+                        if (lower.includes('health') || lower.includes('insurance') || lower.includes('pet') || lower.includes('transport')) return '3. Health & Maintenance';
+                        if (lower.includes('saving') || lower.includes('transfer')) return '4. Savings & Goals';
+                        return '5. Lifestyle & Discretionary';
+                    };
+                    
+                    const tiers = ['1. Income', '2. Core Survival & Fixed', '3. Health & Maintenance', '4. Savings & Goals', '5. Lifestyle & Discretionary'];
+                    
+                    return tiers.map(tier => {
+                        const tierItems = items.filter(i => getTier(i.category) === tier);
+                        if (tierItems.length === 0) return null;
+                        
+                        const cats = [...new Set(tierItems.map(i => i.category))].sort((a,b) => a.localeCompare(b));
+                        
+                        return (
+                            <div key={tier} style={{marginBottom: '1.5rem', background: 'var(--bg-card)', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05)', overflow: 'hidden', border: '1px solid var(--border-neutral)'}}>
+                                <div style={{background: 'var(--bg-table-row-alt)', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-neutral)'}}>
+                                    <h2 style={{margin: 0, fontSize: '1.1rem', color: 'var(--text-main)', fontWeight: 800, letterSpacing: '0.5px'}}>{tier.toUpperCase()}</h2>
+                                </div>
+                                <table style={{margin: 0, border: 'none', borderRadius: 0, boxShadow: 'none', width: '100%'}}>
+                                    <thead>
+                                        <tr style={{background: 'var(--bg-table-header)'}}>
+                                            <th style={{padding: '0.75rem 1rem', textAlign: 'left', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)'}}></th>
+                                            <th style={{padding: '0.75rem 1rem', textAlign: 'left', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)'}}>Native Amount</th>
+                                            <th style={{padding: '0.75rem 1rem', textAlign: 'right', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)'}}>Wk</th>
+                                            <th style={{padding: '0.75rem 1rem', textAlign: 'right', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)'}}>Fn</th>
+                                            <th style={{padding: '0.75rem 1rem', textAlign: 'right', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)'}}>Mo</th>
+                                            <th style={{padding: '0.75rem 1rem', textAlign: 'right', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)'}}>Yr</th>
+                                            <th style={{padding: '0.75rem 1rem', textAlign: 'center', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)'}}>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {cats.map(cat => {
+                                            const catItems = tierItems.filter(i => i.category === cat).sort((a, b) => calculateMetrics(b.native_amount, b.cadence).annual - calculateMetrics(a.native_amount, a.cadence).annual);
+                                            return renderCategoryGroup(cat, catItems);
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        );
+                    });
+                })()}
+        </div>
+        {isCreating && <CreateItemModal owner={owner} allCategories={allCategories} allRoutes={allRoutes} onClose={() => setIsCreating(false)} onCreate={onCreate} />}
+        </div>
+    );
+}
+

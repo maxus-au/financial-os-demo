@@ -1,0 +1,188 @@
+.engine-container {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.engine-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+}
+.engine-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+/* Reality Check */
+.reality-check-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.stat-box {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+.stat-box.highlight {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+.stat-box .label {
+  font-size: 0.85rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.stat-box .value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.stat-box .sub-value {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Timeline */
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.timeline-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+.timeline-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+}
+.timeline-card .saved {
+  color: #059669;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.timeline-card .total-cash {
+  margin-top: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+/* Matrix */
+.matrix-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.property-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+.prop-header {
+  background: #f8fafc;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+.prop-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #0f172a;
+}
+.closing-costs {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+.scenarios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.scenario {
+  padding: 1.5rem;
+}
+.scenario:first-child {
+  border-right: 1px solid #e2e8f0;
+}
+.scenario.highlight {
+  background: #fdfbbd; /* very light amber/yellow to highlight 15% */
+  background: #f0fdf4;
+}
+.scenario h5 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #334155;
+}
+.req-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: #475569;
+}
+.req-row.total {
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 2px solid #e2e8f0;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+/* Timeline Checks */
+.timeline-checks {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.check {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.check.pass {
+  background: #dcfce7;
+  color: #166534;
+}
+.check.fail {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Equity */
+.equity-card {
+  background: #1e293b;
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+}
+.equity-card h3 {
+  margin: 0 0 1rem 0;
+  color: #38bdf8;
+}
+.equity-card p {
+  color: #cbd5e1;
+  line-height: 1.6;
+}
