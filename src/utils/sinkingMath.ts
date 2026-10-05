@@ -79,8 +79,6 @@ export function getDefaultDueMonth(item: FinancialItem): number {
   if (combined.includes('hair') || combined.includes('salon')) return 3; // March (quarterly)
   if (combined.includes('accor vacation') || combined.includes('avc')) return 1; // Jan, Apr, Jul, Oct
   if (combined.includes('accor plus')) return 8; // August
-  if (combined.includes('electricity') || combined.includes('power')) return 1; // Quarterly
-  if (combined.includes('gas')) return 2; // Bi-monthly / quarterly
 
   return 1; // Default to January
 }
@@ -124,28 +122,24 @@ function isPeriodicSinkingBill(item: FinancialItem): { isSinking: boolean; effec
   const combined = `${desc} ${notes}`;
   const metrics = calculateMetrics(item.native_amount, item.cadence);
 
-  // Car Rego
+  // Vehicle Rego
   if (combined.includes('rego') || combined.includes('registration')) {
-    return { isSinking: true, effectiveCadence: 'Annual', lumpSumAmount: metrics.annual || 1092 };
+    return { isSinking: true, effectiveCadence: 'Annual', lumpSumAmount: metrics.annual || 936 };
   }
-  // Car Tyres
+  // Vehicle Tyres
   if (combined.includes('tyre')) {
-    return { isSinking: true, effectiveCadence: 'Annual', lumpSumAmount: metrics.annual || 728 };
+    return { isSinking: true, effectiveCadence: 'Annual', lumpSumAmount: metrics.annual || 832 };
   }
-  // Car Servicing
-  if (combined.includes('servicing')) {
-    return { isSinking: true, effectiveCadence: 'Annual', lumpSumAmount: metrics.annual || 0 };
-  }
-  // Council Rates - Real household notice is $1,141.75 half-yearly
+  // Council Rates - Combined household notice is $1,170.00 half-yearly ($2,340/yr)
   if (combined.includes('rates') || combined.includes('council')) {
-    return { isSinking: true, effectiveCadence: 'Semi-Annual', lumpSumAmount: 1141.75, isJointHouseholdBill: true };
+    return { isSinking: true, effectiveCadence: 'Semi-Annual', lumpSumAmount: 1170.00, isJointHouseholdBill: true };
   }
-  // Water & Sewerage - Real household notice is $400.00 quarterly
-  if (combined.includes('water')) {
-    return { isSinking: true, effectiveCadence: 'Quarterly', lumpSumAmount: 400.00, isJointHouseholdBill: true };
+  // Water & Utilities (Sinking) - Combined household notice is $455.00 quarterly ($1,820/yr)
+  if (combined.includes('water') && item.account_route === 'MQ • Joint Savings') {
+    return { isSinking: true, effectiveCadence: 'Quarterly', lumpSumAmount: 455.00, isJointHouseholdBill: true };
   }
-  // Body Corporate / Strata - Real household notice is $910.00 quarterly
-  if (combined.includes('body corporate') || combined.includes('body corp')) {
+  // Body Corporate / Strata - Combined household notice is $910.00 quarterly ($3,640/yr)
+  if (combined.includes('body corporate') || combined.includes('strata')) {
     return { isSinking: true, effectiveCadence: 'Quarterly', lumpSumAmount: 910.00, isJointHouseholdBill: true };
   }
   // Standard non-weekly cadences
@@ -280,8 +274,8 @@ export function simulateSinkingTrajectory(
   });
 
   // For BOQ Home Offset (or ALL reserve aggregate), model Jordan's planned mortgage contribution.
-  // Alex's rent funds his agreed portion, and Jordan funds the remaining balance of the
-  // contractual P&I mortgage repayment ($1,240.79/fn) from her salary so the offset facility does not hemorrhage cash.
+  // Alex's rent funds his agreed portion ($250/wk), and Jordan funds the remaining balance of the
+  // contractual mortgage repayment ($700/wk) from her salary so the offset facility does not hemorrhage cash.
   if (selectedRoute === 'BOQ • Home Offset' || isAll) {
     const boqMortgage = relevantItems.find(i => 
       i.account_route === 'BOQ • Home Offset' && 
@@ -295,15 +289,13 @@ export function simulateSinkingTrajectory(
       );
       const alexWeeklyRent = alexRentItem 
         ? calculateMetrics(alexRentItem.native_amount, alexRentItem.cadence).weekly 
-        : 150;
-      const alexFortnightlyRent = alexWeeklyRent * 2;
-      const jordanMortgageShare = Math.max(0, boqMortgage.native_amount - alexFortnightlyRent);
+        : 250;
+      const mortgageWeekly = calculateMetrics(boqMortgage.native_amount, boqMortgage.cadence).weekly;
+      const jordanWeeklyShare = Math.max(0, mortgageWeekly - alexWeeklyRent);
 
-      if (jordanMortgageShare > 0) {
+      if (jordanWeeklyShare > 0) {
         for (let w = 0; w < 52; w++) {
-          if (w % 2 === 0) { // Jordan's fortnightly pay cycle
-            weeks[w].inflows += jordanMortgageShare;
-          }
+          weeks[w].inflows += jordanWeeklyShare;
         }
       }
     }
@@ -359,8 +351,8 @@ export function simulateSinkingTrajectory(
     // If this is a joint household bill on Joint Savings or ALL, ensure each unique bill is processed once as the unified invoice
     if (sinkingInfo.isJointHouseholdBill) {
       const rootKey = item.description
-        .replace(/\s*\(Alex\s*Share\)/i, '')
-        .replace(/\s*\(Jordan\s*Share\)/i, '')
+        .replace(/\s*\(Alex\s*(60%|Share)?\)/i, '')
+        .replace(/\s*\(Jordan\s*(40%|Share)?\)/i, '')
         .replace(/\s*\(Joint\s*Share\)/i, '')
         .toLowerCase()
         .trim();
@@ -370,12 +362,12 @@ export function simulateSinkingTrajectory(
 
     const anchorMonth = getDefaultDueMonth(item);
 
-    // Helper to add event to week, consolidating split shares (e.g. Alex Share + Jordan Share) into a single invoice entry
+    // Helper to add event to week, consolidating split shares into a single invoice entry
     const recordEvent = (wIndex: number, cadence: string, amount: number) => {
       weeks[wIndex].outflows += amount;
       const rootDesc = item.description
-        .replace(/\s*\(Alex\s*Share\)/i, '')
-        .replace(/\s*\(Jordan\s*Share\)/i, '')
+        .replace(/\s*\(Alex\s*(60%|Share)?\)/i, '')
+        .replace(/\s*\(Jordan\s*(40%|Share)?\)/i, '')
         .replace(/\s*\(Joint\s*Share\)/i, '')
         .trim();
       
@@ -508,8 +500,8 @@ export function simulateSinkingTrajectory(
   // Helper to extract clean bill title without split share suffixes
   const getRootBillName = (desc: string): string => {
     return desc
-      .replace(/\s*\(Alex\s*Share\)/i, '')
-      .replace(/\s*\(Jordan\s*Share\)/i, '')
+      .replace(/\s*\(Alex\s*(60%|Share)?\)/i, '')
+      .replace(/\s*\(Jordan\s*(40%|Share)?\)/i, '')
       .replace(/\s*\(Joint\s*Share\)/i, '')
       .trim();
   };
