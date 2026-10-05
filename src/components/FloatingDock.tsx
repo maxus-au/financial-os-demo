@@ -1,6 +1,6 @@
 import { isDemoMode } from '../utils/demoStorageAdapter';
 
-export type NavTab = 'Stephen' | 'Shae' | 'Property' | 'Sinking';
+export type NavTab = 'Alex' | 'Jordan' | 'Property' | 'Sinking';
 
 interface FloatingDockProps {
   activeTab: NavTab;
@@ -23,8 +23,8 @@ export default function FloatingDock({
 }: FloatingDockProps) {
   const isDemo = isDemoMode();
   const tabs: { id: NavTab; label: string }[] = [
-    { id: 'Stephen', label: isDemo ? 'Alex' : 'Stephen' },
-    { id: 'Shae', label: isDemo ? 'Jordan' : 'Shae' },
+    { id: 'Alex', label: isDemo ? 'Alex' : 'Alex' },
+    { id: 'Jordan', label: isDemo ? 'Jordan' : 'Jordan' },
     { id: 'Sinking', label: 'Sinking & Liquidity' },
     { id: 'Property', label: 'Property' },
   ];
@@ -77,11 +77,11 @@ export default function FloatingDock({
       <button
         onClick={onToggleActor}
         className="h-8 px-2.5 rounded-full text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all flex items-center gap-1.5 cursor-pointer group shrink-0"
-        title={`Active session: ${sessionActor || 'User'}. Click to switch to ${sessionActor === 'Stephen' ? 'Shae' : 'Stephen'}`}
+        title={`Active session: ${sessionActor || 'User'}. Click to switch to ${sessionActor === 'Alex' ? 'Jordan' : 'Alex'}`}
       >
         <span
           className={`w-2 h-2 rounded-full transition-transform group-hover:scale-125 ${
-            sessionActor === 'Shae' ? 'bg-rose-500 shadow-rose-500/50' : 'bg-emerald-500 shadow-emerald-500/50'
+            sessionActor === 'Jordan' ? 'bg-rose-500 shadow-rose-500/50' : 'bg-emerald-500 shadow-emerald-500/50'
           } shadow-xs`}
         />
         <span className="hidden sm:inline">{sessionActor || 'User'}</span>

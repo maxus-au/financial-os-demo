@@ -215,8 +215,8 @@ export default function CreateItemModal({ owner, allCategories = [], allRoutes =
               >
                 <option value="Verified">✓ Verified</option>
                 <option value="Archived / Paid Off">🎉 Archived / Paid Off</option>
-                <option value="Needs Verification with Shae">⚠️ Needs Shae</option>
-                <option value="Needs Verification with Stephen">⚠️ Needs Stephen</option>
+                <option value="Needs Verification with Jordan">⚠️ Needs Jordan</option>
+                <option value="Needs Verification with Alex">⚠️ Needs Alex</option>
               </select>
             </div>
           </div>

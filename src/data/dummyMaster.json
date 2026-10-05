@@ -4,20 +4,12 @@
     "owner": "Alex",
     "category": "Income",
     "description": "Alex Net Salary",
-    "native_amount": 1489.08,
+    "native_amount": 1600,
     "cadence": "Weekly",
     "account_route": "ING • Everyday",
     "source_authority": "TechCorp Payslip",
     "verification_status": "Verified",
-    "notes": "TechCorp net weekly pay",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.307Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Salary deposit)"
-      }
-    ],
+    "notes": "Net weekly tech salary",
     "direction": "Inflow",
     "deduction_day": "Every Tuesday (Salary deposit)"
   },
@@ -25,21 +17,13 @@
     "id": "S-02",
     "owner": "Alex",
     "category": "Housing",
-    "description": "Rent to Jordan (Offset)",
-    "native_amount": 150,
+    "description": "Rent Contribution (Offset)",
+    "native_amount": 175,
     "cadence": "Weekly",
     "account_route": "BOQ • Home Offset",
-    "source_authority": "Agreed Option 1",
+    "source_authority": "Household Agreement",
     "verification_status": "Verified",
-    "notes": "Rent to Jordan (BOQ Offset) - $150/wk confirmed moving forward",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer) | Status: Verified"
-      }
-    ],
+    "notes": "Weekly mortgage offset contribution",
     "direction": "Transfer",
     "deduction_day": "Every Tuesday (Auto-transfer)"
   },
@@ -48,41 +32,12 @@
     "owner": "Alex",
     "category": "Housing",
     "description": "Council Rates (Alex Share)",
-    "native_amount": 22.5,
+    "native_amount": 25,
     "cadence": "Weekly",
     "account_route": "MQ • Joint Savings",
-    "source_authority": "City of Gold Coast Council (Acct **** 4025252 8)",
+    "source_authority": "Metro City Council",
     "verification_status": "Verified",
-    "notes": "Council rates weekly float to MQ Joint Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T07:45:19.018Z",
-        "actor": "Alex (Reconciled Records Patch)",
-        "reason": "Reconciled property bill cadence and due date synchronization",
-        "changes": [
-          {
-            "field": "source_authority",
-            "from": "GCCC Rates Notice ($1,114.66/half-year total)",
-            "to": "City of Gold Coast Council (Acct 2 4025252 8)"
-          },
-          {
-            "field": "due_month",
-            "to": 2
-          },
-          {
-            "field": "notes",
-            "from": "50% share of municipal rates",
-            "to": "50% share of municipal rates. Half-yearly (Feb & Aug). Next due: ~17–20 Feb 2027. Annual household: $2,283.50/yr ($1,141.75/notice). Float: $22.50/wk ($45/fn)."
-          }
-        ]
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer)"
-      }
-    ],
+    "notes": "50% share of quarterly municipal rates float",
     "direction": "Transfer",
     "due_month": 2,
     "deduction_day": "Every Tuesday (Auto-transfer)"
@@ -91,42 +46,13 @@
     "id": "S-04",
     "owner": "Alex",
     "category": "Housing",
-    "description": "Water (Alex Share)",
-    "native_amount": 17.5,
+    "description": "Water & Utilities (Alex Share)",
+    "native_amount": 20,
     "cadence": "Weekly",
     "account_route": "MQ • Joint Savings",
-    "source_authority": "City of Gold Coast Water (Acct ****)",
+    "source_authority": "Metro Water Corp",
     "verification_status": "Verified",
-    "notes": "Water weekly float to MQ Joint Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T07:45:19.018Z",
-        "actor": "Alex (Reconciled Records Patch)",
-        "reason": "Reconciled property bill cadence and due date synchronization",
-        "changes": [
-          {
-            "field": "source_authority",
-            "from": "City of Gold Coast Water (~$800/half-year total)",
-            "to": "City of Gold Coast Water (Acct 840252521)"
-          },
-          {
-            "field": "due_month",
-            "to": 11
-          },
-          {
-            "field": "notes",
-            "from": "50% share of water consumption",
-            "to": "50% share of water & sewerage. Quarterly (~90 days). Next due: ~20 Nov 2026. Annual household: ~$1,600/yr (~$400–$465/notice). Float: $17.50/wk ($35/fn)."
-          }
-        ]
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer)"
-      }
-    ],
+    "notes": "Quarterly water float",
     "direction": "Transfer",
     "due_month": 11,
     "deduction_day": "Every Tuesday (Auto-transfer)"
@@ -135,42 +61,13 @@
     "id": "S-05",
     "owner": "Alex",
     "category": "Housing",
-    "description": "Body Corporate (Alex Share)",
-    "native_amount": 35,
+    "description": "Strata / Body Corporate (Alex Share)",
+    "native_amount": 40,
     "cadence": "Weekly",
     "account_route": "MQ • Joint Savings",
-    "source_authority": "Body Corporate Levies / Strata (DEFT 25335418)",
+    "source_authority": "Strata Care",
     "verification_status": "Verified",
-    "notes": "Body corporate weekly float to MQ Joint Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T07:45:19.018Z",
-        "actor": "Alex (Reconciled Records Patch)",
-        "reason": "Reconciled property bill cadence and due date synchronization",
-        "changes": [
-          {
-            "field": "source_authority",
-            "from": "Body Corporate levies",
-            "to": "Body Corporate Levies / Strata (DEFT 25335418)"
-          },
-          {
-            "field": "due_month",
-            "to": 11
-          },
-          {
-            "field": "notes",
-            "from": "50% share of strata",
-            "to": "50% share of strata. Quarterly (Jan, Apr, Aug, Nov). Next due: 30 Nov – 1 Dec 2026. Annual household: ~$3,640/yr (~$833–$1,189/notice). Float: $35.00/wk ($70/fn)."
-          }
-        ]
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer)"
-      }
-    ],
+    "notes": "Quarterly administrative sinking fund share",
     "direction": "Transfer",
     "due_month": 11,
     "deduction_day": "Every Tuesday (Auto-transfer)"
@@ -179,21 +76,13 @@
     "id": "S-06",
     "owner": "Alex",
     "category": "Savings",
-    "description": "House Deposit Core (Alex Share)",
-    "native_amount": 175,
+    "description": "Home Deposit Sinking Float",
+    "native_amount": 200,
     "cadence": "Weekly",
     "account_route": "MQ • Joint Savings",
-    "source_authority": "Joint Savings Strategy",
+    "source_authority": "Target Savings Plan",
     "verification_status": "Verified",
-    "notes": "House deposit core weekly float to MQ Joint Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer)"
-      }
-    ],
+    "notes": "Joint high-yield home purchase sinking fund",
     "direction": "Transfer",
     "deduction_day": "Every Tuesday (Auto-transfer)"
   },
@@ -201,21 +90,13 @@
     "id": "S-07",
     "owner": "Alex",
     "category": "Food",
-    "description": "Groceries & Takeaway (Alex Share)",
+    "description": "Groceries & Household Supplies",
     "native_amount": 150,
     "cadence": "Weekly",
     "account_route": "MQ • Joint Household",
-    "source_authority": "Agreed $300/wk household food pool",
+    "source_authority": "Household Budget",
     "verification_status": "Verified",
-    "notes": "Groceries weekly float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer)"
-      }
-    ],
+    "notes": "Alex 50% share of weekly groceries",
     "direction": "Transfer",
     "deduction_day": "Every Tuesday (Auto-transfer)"
   },
@@ -223,21 +104,13 @@
     "id": "S-08",
     "owner": "Alex",
     "category": "Utilities",
-    "description": "Electricity (Alex Share)",
-    "native_amount": 17,
+    "description": "Electricity & Solar Float",
+    "native_amount": 20,
     "cadence": "Weekly",
     "account_route": "MQ • Joint Household",
-    "source_authority": "Household Energy Usage",
+    "source_authority": "Energy Provider",
     "verification_status": "Verified",
-    "notes": "Electricity weekly float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer)"
-      }
-    ],
+    "notes": "Quarterly power bill buffer",
     "direction": "Transfer",
     "deduction_day": "Every Tuesday (Auto-transfer)"
   },
@@ -245,1854 +118,273 @@
     "id": "S-09",
     "owner": "Alex",
     "category": "Utilities",
-    "description": "Gas (Alex Share)",
-    "native_amount": 9,
+    "description": "Gas Hot Water",
+    "native_amount": 10,
     "cadence": "Weekly",
     "account_route": "MQ • Joint Household",
-    "source_authority": "Household Energy Usage",
+    "source_authority": "Gas Provider",
     "verification_status": "Verified",
-    "notes": "Gas weekly float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer)"
-      }
-    ],
+    "notes": "Quarterly gas reserve",
     "direction": "Transfer",
     "deduction_day": "Every Tuesday (Auto-transfer)"
   },
   {
     "id": "S-10",
     "owner": "Alex",
-    "category": "Utilities",
-    "description": "Internet - Leaptel (Alex Share)",
-    "native_amount": 40,
-    "cadence": "Monthly",
-    "account_route": "MQ • Joint Household",
-    "source_authority": "Leaptel NBN bill ($80/mo total)",
-    "verification_status": "Verified",
-    "notes": "Internet monthly float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Monthly, 1st of month (Auto-transfer)"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Monthly, 1st of month (Auto-transfer)"
-  },
-  {
-    "id": "S-11",
-    "owner": "Alex",
-    "category": "Lifestyle",
-    "description": "Fitness Passport (Alex Share)",
-    "native_amount": 15.5,
+    "category": "Health",
+    "description": "Gym & Fitness Pass",
+    "native_amount": 18,
     "cadence": "Weekly",
     "account_route": "MQ • Joint Household",
-    "source_authority": "Fitness Passport Membership",
+    "source_authority": "Gym Membership",
     "verification_status": "Verified",
-    "notes": "Fitness passport weekly float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Tuesday (Auto-transfer)"
-      }
-    ],
+    "notes": "Weekly fitness direct debit",
     "direction": "Transfer",
     "deduction_day": "Every Tuesday (Auto-transfer)"
   },
   {
-    "id": "S-12",
+    "id": "S-11",
     "owner": "Alex",
     "category": "Utilities",
-    "description": "Mobile Phone (Amaysim)",
-    "native_amount": 30,
+    "description": "High-Speed Fiber Internet",
+    "native_amount": 45,
     "cadence": "Monthly",
-    "account_route": "ING • Direct Debit",
-    "source_authority": "Amaysim Plan",
+    "account_route": "MQ • Joint Household",
+    "source_authority": "Internet ISP",
     "verification_status": "Verified",
-    "notes": "Amaysim mobile direct debit",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Monthly, 16th–20th (Direct Debit)"
-      }
-    ],
-    "direction": "Outflow",
-    "deduction_day": "Monthly, 16th–20th (Direct Debit)"
+    "notes": "Alex 50% share of monthly 500Mbps broadband",
+    "direction": "Transfer",
+    "deduction_day": "1st of month"
+  },
+  {
+    "id": "S-12",
+    "owner": "Alex",
+    "category": "Transport",
+    "description": "Commuter Fuel",
+    "native_amount": 90,
+    "cadence": "Weekly",
+    "account_route": "ING • Everyday",
+    "source_authority": "Fuel Card",
+    "verification_status": "Verified",
+    "notes": "Routine weekly fuel",
+    "direction": "Outflow"
   },
   {
     "id": "S-13",
     "owner": "Alex",
-    "category": "Insurances",
-    "description": "Car Insurance (Car Allianz)",
-    "native_amount": 50.85,
-    "cadence": "Fortnightly",
-    "account_route": "ING • Direct Debit",
-    "source_authority": "Allianz Comprehensive Policy",
+    "category": "Transport",
+    "description": "Vehicle Registration Sinking",
+    "native_amount": 22,
+    "cadence": "Weekly",
+    "account_route": "ING • Savings",
+    "source_authority": "State Transport Dept",
     "verification_status": "Verified",
-    "notes": "A&G / Allianz Car comprehensive insurance direct debit",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Thursday (Direct Debit)"
-      }
-    ],
-    "direction": "Outflow",
-    "deduction_day": "Fortnightly, Thursday (Direct Debit)"
+    "notes": "Annual car registration sinking fund (,144/yr)",
+    "direction": "Transfer",
+    "due_month": 8,
+    "deduction_day": "Every Tuesday (Auto-transfer)"
   },
   {
     "id": "S-14",
     "owner": "Alex",
-    "category": "Insurances",
-    "description": "Health Insurance (ahm)",
-    "native_amount": 89,
-    "cadence": "Fortnightly",
-    "account_route": "ING • Direct Debit",
-    "source_authority": "ahm Private Health Insurance",
+    "category": "Transport",
+    "description": "Vehicle Maintenance & Tyres",
+    "native_amount": 16,
+    "cadence": "Weekly",
+    "account_route": "ING • Savings",
+    "source_authority": "Auto Service Sinking",
     "verification_status": "Verified",
-    "notes": "ahm health insurance direct debit (alternating Thursdays)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Thursday (Direct Debit)"
-      }
-    ],
-    "direction": "Outflow",
-    "deduction_day": "Fortnightly, Thursday (Direct Debit)"
+    "notes": "Annual scheduled service & tyre reserve",
+    "direction": "Transfer",
+    "due_month": 11,
+    "deduction_day": "Every Tuesday (Auto-transfer)"
   },
   {
     "id": "S-15",
     "owner": "Alex",
     "category": "Insurances",
-    "description": "Pet Insurance (Lola)",
-    "native_amount": 90.28,
-    "cadence": "Fortnightly",
-    "account_route": "ING • Direct Debit",
-    "source_authority": "ahm Pet Insurance Policy",
+    "description": "Comprehensive Car Insurance",
+    "native_amount": 120,
+    "cadence": "Monthly",
+    "account_route": "ING • Everyday",
+    "source_authority": "Auto Insurer",
     "verification_status": "Verified",
-    "notes": "Woolworths pet insurance (Lola) direct debit",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Tuesday (Direct Debit)"
-      }
-    ],
-    "direction": "Outflow",
-    "deduction_day": "Fortnightly, Tuesday (Direct Debit)"
+    "notes": "Monthly premium debit",
+    "direction": "Outflow"
   },
   {
     "id": "S-16",
     "owner": "Alex",
-    "category": "Pet",
-    "description": "Lola - Simparica Trio",
-    "native_amount": 80,
-    "cadence": "Semi-Annual",
+    "category": "Health",
+    "description": "Private Health Cover",
+    "native_amount": 65,
+    "cadence": "Fortnightly",
     "account_route": "ING • Everyday",
-    "source_authority": "Budget Pet Products 6-pack",
+    "source_authority": "Health Fund",
     "verification_status": "Verified",
-    "notes": "6-month flea, tick & worm chews ($80 semi-annual)",
-    "audit_trail": [],
+    "notes": "Hospital & Extras cover",
     "direction": "Outflow"
   },
   {
     "id": "S-17",
     "owner": "Alex",
-    "category": "Pet",
-    "description": "Lola - Dry Food (Black Hawk 7kg)",
-    "native_amount": 100,
-    "cadence": "Quarterly",
+    "category": "Subscriptions",
+    "description": "Streaming & Software (Cloud, Music)",
+    "native_amount": 35,
+    "cadence": "Monthly",
     "account_route": "ING • Everyday",
-    "source_authority": "Budget Pet Products",
+    "source_authority": "Subscriptions Hub",
     "verification_status": "Verified",
-    "notes": "7kg bag per quarter ($100 quarterly)",
-    "audit_trail": [],
+    "notes": "Music, cloud storage and dev tooling",
     "direction": "Outflow"
   },
   {
     "id": "S-18",
     "owner": "Alex",
-    "category": "Pet",
-    "description": "Lola - Wet Food (Grain Free Cans)",
-    "native_amount": 50,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Pet Circle Recurring Order",
-    "verification_status": "Verified",
-    "notes": "Daily dinner can supplement",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-19",
-    "owner": "Alex",
-    "category": "Pet",
-    "description": "Lola - Duck Treats (Black Hawk Jerky)",
-    "native_amount": 25,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Amazon Australia Orders",
-    "verification_status": "Verified",
-    "notes": "Training & daily treats - to check",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-04T17:38:36.419Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Needs Verification with Alex",
-        "to": "Verified",
-        "reason": "Inline update: verification_status"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-20",
-    "owner": "Alex",
-    "category": "Pet",
-    "description": "Lola - Professional Grooming",
-    "native_amount": 90,
-    "cadence": "Quarterly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Just Fur You Receipts ($90/quarter)",
-    "verification_status": "Verified",
-    "notes": "Salon wash, de-shed & trim every ~12 weeks",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-21",
-    "owner": "Alex",
-    "category": "Transport",
-    "description": "Car - Fuel (Commuting)",
-    "native_amount": 110,
-    "cadence": "Weekly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Weekly commute baseline to TechCorp",
-    "verification_status": "Verified",
-    "notes": "98 RON Premium Unleaded",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-22",
-    "owner": "Alex",
-    "category": "Transport",
-    "description": "Car - QLD Registration (L3CK4)",
-    "native_amount": 21,
+    "category": "Savings",
+    "description": "Personal Discretionary & Buffer Savings",
+    "native_amount": 150,
     "cadence": "Weekly",
     "account_route": "ING • Savings",
-    "source_authority": "TMR QLD Renewal ($1,060.20/yr exact)",
-    "verification_status": "Pending Review",
-    "notes": "Car sinking - Pending setup next Tuesday ($21/wk rego into ING Savings)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Pending Setup (Starting next Tuesday) | Status: Pending Review"
-      }
-    ],
+    "source_authority": "Personal Savings Target",
+    "verification_status": "Verified",
+    "notes": "Retained personal capital growth (,800/yr)",
     "direction": "Transfer",
-    "deduction_day": "Pending Setup (Starting next Tuesday)"
-  },
-  {
-    "id": "S-23",
-    "owner": "Alex",
-    "category": "Transport",
-    "description": "Car - Tyres (18\"\" Performance)",
-    "native_amount": 14,
-    "cadence": "Weekly",
-    "account_route": "ING • Savings",
-    "source_authority": "2-Year Replacement Cycle ($1,450 set)",
-    "verification_status": "Pending Review",
-    "notes": "Car sinking - Pending setup next Tuesday ($15/wk tyres into ING Savings)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T00:02:14.954Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Needs Verification",
-        "to": "Needs Verification with Jordan",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-05T00:02:35.923Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Needs Verification with Jordan",
-        "to": "Needs Verification with Alex",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-05T00:03:15.025Z",
-        "actor": "Alex",
-        "field": "revert_to_baseline",
-        "from_amount": 14,
-        "to_amount": 14,
-        "reason": "Reverted to historical baseline"
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Pending Setup (Starting next Tuesday) | Status: Pending Review"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Pending Setup (Starting next Tuesday)"
-  },
-  {
-    "id": "S-24",
-    "owner": "Alex",
-    "category": "Transport",
-    "description": "Car - Tolls (Linkt)",
-    "native_amount": 1,
-    "cadence": "Weekly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Linkt Account Statement ($40/yr cap)",
-    "verification_status": "Verified",
-    "notes": "Occasional M1 / toll travel",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-25",
-    "owner": "Alex",
-    "category": "Transport",
-    "description": "Car - Car Wash",
-    "native_amount": 25,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Self-reported monthly car wash routine",
-    "verification_status": "Verified by Alex",
-    "notes": "~$25 AUD per month once-a-month wash",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-26",
-    "owner": "Alex",
-    "category": "Transport",
-    "description": "Car - Scheduled Servicing",
-    "native_amount": 0,
-    "cadence": "Annual",
-    "account_route": "ING • Savings",
-    "source_authority": "BMW 2-Year Prepaid Service Package",
-    "verification_status": "Verified",
-    "notes": "Fully prepaid upfront through 2027/28 ($0 ongoing)",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-27",
-    "owner": "Alex",
-    "category": "Health",
-    "description": "Medication - Sertraline",
-    "native_amount": 7.1,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Chemist Warehouse PBS Script ($7.10/box; $14.20 for 2 boxes)",
-    "verification_status": "Verified",
-    "notes": "Monthly prescription",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-28",
-    "owner": "Alex",
-    "category": "Health",
-    "description": "Medication - Vyvanse",
-    "native_amount": 25,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Chemist Warehouse PBS Script",
-    "verification_status": "Verified",
-    "notes": "Monthly prescription",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-29",
-    "owner": "Alex",
-    "category": "Lifestyle",
-    "description": "Medicinal Cannabis / Weed",
-    "native_amount": 105,
-    "cadence": "Weekly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Revolut Receipts Average ($105/wk)",
-    "verification_status": "Verified by Alex",
-    "notes": "Prescribed flower / pastilles / carts average (USD / Foreign FX)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-04T17:32:16.771Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified by Alex",
-        "to": "Needs Verification with Jordan",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-04T17:32:34.614Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Needs Verification with Jordan",
-        "to": "Verified",
-        "reason": "Changed verification_status"
-      },
-      {
-        "timestamp": "2026-10-05T01:33:59.013Z",
-        "actor": "Alex",
-        "field": "revert_to_baseline",
-        "from_amount": 105,
-        "to_amount": 105,
-        "reason": "Reverted to historical baseline"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-30",
-    "owner": "Alex",
-    "category": "Grooming",
-    "description": "Barber / Hair Cut",
-    "native_amount": 40,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Routine Barber Cadence",
-    "verification_status": "Verified",
-    "notes": "Monthly haircut",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-31",
-    "owner": "Alex",
-    "category": "Subscriptions",
-    "description": "Torbox (Stremio Debrid)",
-    "native_amount": 4.32,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Torbox Subscription ($3.00 USD/mo)",
-    "verification_status": "Verified by Alex",
-    "notes": "Stremio backend streaming provider (USD / Foreign FX)",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-32",
-    "owner": "Alex",
-    "category": "Subscriptions",
-    "description": "Debridio (Stremio)",
-    "native_amount": 14.4,
-    "cadence": "Annual",
-    "account_route": "ING • Everyday",
-    "source_authority": "Debridio Annual Subscription ($9.99 USD/yr)",
-    "verification_status": "Verified by Alex",
-    "notes": "Stremio addon indexer/debrid (USD / Foreign FX)",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-33",
-    "owner": "Alex",
-    "category": "Subscriptions",
-    "description": "HS Replay",
-    "native_amount": 7.19,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "HS Replay Subscription ($4.99 USD/mo)",
-    "verification_status": "Verified by Alex",
-    "notes": "Hearthstone stats tracker (USD / Foreign FX)",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-34",
-    "owner": "Alex",
-    "category": "Subscriptions",
-    "description": "Amazon Prime",
-    "native_amount": 79,
-    "cadence": "Annual",
-    "account_route": "ING • Direct Debit",
-    "source_authority": "Amazon Australia Prime Annual",
-    "verification_status": "Verified",
-    "notes": "Annual membership",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T04:35:36.630Z",
-        "actor": "Alex",
-        "field": "due_month",
-        "changes": [
-          {
-            "field": "due_month",
-            "label": "Due Month",
-            "from": "None",
-            "to": 6
-          }
-        ],
-        "from": "None",
-        "to": 6,
-        "reason": "Updated billing anchor month to June"
-      }
-    ],
-    "direction": "Outflow",
-    "due_month": 6
-  },
-  {
-    "id": "S-35",
-    "owner": "Alex",
-    "category": "Subscriptions",
-    "description": "Google AI Pro (5 TB) / Google One",
-    "native_amount": 32.99,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Google Play Order SOP.3336-7395-3655-37213..14",
-    "verification_status": "Verified",
-    "notes": "5 TB Google One storage + Gemini AI ($32.99/mo) (Billed via Google Play)",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-36",
-    "owner": "Alex",
-    "category": "Subscriptions",
-    "description": "Relay for Reddit (Silver Plan)",
-    "native_amount": 3.09,
-    "cadence": "Monthly",
-    "account_route": "ING • Everyday",
-    "source_authority": "Google Play Receipt GPA.3374-7184-9587-14390..32",
-    "verification_status": "Verified",
-    "notes": "Reddit mobile app subscription ($3.09/mo) (Billed via Google Play)",
-    "audit_trail": [],
-    "direction": "Outflow"
-  },
-  {
-    "id": "S-37",
-    "owner": "Alex",
-    "category": "Debt",
-    "description": "Debt: ZipPay Repayment",
-    "native_amount": 0,
-    "cadence": "Weekly",
-    "account_route": "ING • Direct Debit",
-    "source_authority": "Scheduled ZipPay Repayment",
-    "verification_status": "Archived / Paid Off",
-    "notes": "ZipPay 100% Paid Off (Confirmed)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T02:41:42.596Z",
-        "actor": "Alex",
-        "field": "batch_update",
-        "changes": [
-          {
-            "field": "verification_status",
-            "label": "Status",
-            "from": "Verified",
-            "to": "Archived / Paid Off"
-          },
-          {
-            "field": "account_route",
-            "label": "Route",
-            "from": "ING • Direct Debit",
-            "to": "ING Direct Debit"
-          },
-          {
-            "field": "description",
-            "label": "Description",
-            "from": "ZipPay Repayment",
-            "to": "Debt: ZipPay Repayment"
-          },
-          {
-            "field": "notes",
-            "label": "Notes",
-            "from": "Automatic weekly debt reduction",
-            "to": "Paid in full ($278.50) on 2026-10-05 via ING Savings overflow (prior balance $4,150; remaining $3,871.50). Account closure requested. Freed +$40.00/wk cash flow."
-          },
-          {
-            "field": "direction",
-            "label": "Direction",
-            "from": "Outflow",
-            "to": "None"
-          },
-          {
-            "field": "amount/cadence",
-            "label": "Amount & Cadence",
-            "from_amount": 40,
-            "from_cadence": "Weekly",
-            "to_amount": 0,
-            "to_cadence": "Weekly"
-          }
-        ],
-        "from_amount": 40,
-        "to_amount": 0,
-        "reason": "ZipPay eliminated. Paid in full ($278.50) via ING Savings overflow. Account closure requested."
-      },
-      {
-        "timestamp": "2026-10-05T02:41:42.610Z",
-        "actor": "Alex",
-        "field": "baseline_promotion",
-        "reason": "Permanent debt clearance ($278.50 paid in full). Account closure requested."
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Paid Off / Inactive | Status: Archived / Paid Off"
-      }
-    ],
-    "direction": "Outflow",
-    "deduction_day": "Paid Off / Inactive"
-  },
-  {
-    "id": "S-38",
-    "owner": "Alex",
-    "category": "Personal",
-    "description": "Discretionary Allowance",
-    "native_amount": 125,
-    "cadence": "Weekly",
-    "account_route": "ING • Savings",
-    "source_authority": "Agreed Budget Allocation (Parked in Savings)",
-    "verification_status": "Verified",
-    "notes": "Discretionary allowance transfer to ING Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Every Wednesday (Auto-transfer)"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Every Wednesday (Auto-transfer)"
+    "deduction_day": "Every Tuesday (Auto-transfer)"
   },
   {
     "id": "H-01",
     "owner": "Jordan",
     "category": "Income",
-    "description": "Net Salary (Enterprise & Training)",
-    "native_amount": 3032.05,
-    "cadence": "Fortnightly",
+    "description": "Jordan Net Salary",
+    "native_amount": 1550,
+    "cadence": "Weekly",
     "account_route": "MQ • Jordan Personal",
-    "source_authority": "Verified Pay Slip (Enterprise & Training Co)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Enterprise & Training net pay",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:47:15.846Z",
-        "actor": "Jordan",
-        "field": "account_route",
-        "changes": [
-          {
-            "field": "account_route",
-            "label": "Route",
-            "from": "BOQ • Home Offset",
-            "to": "MQ • Jordan Personal"
-          }
-        ],
-        "from": "BOQ • Home Offset",
-        "to": "MQ • Jordan Personal",
-        "reason": "Changed Route: \"BOQ • Home Offset\" ➔ \"MQ • Jordan Personal\""
-      },
-      {
-        "timestamp": "2026-10-05T03:47:43.302Z",
-        "actor": "Jordan",
-        "field": "baseline_promotion",
-        "reason": "Jordan needs to transfer it over to new account, def dos not go to BOQ Offset"
-      },
-      {
-        "timestamp": "2026-10-05T03:49:32.709Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "changes": [
-          {
-            "field": "verification_status",
-            "label": "Status",
-            "from": "Verified",
-            "to": "Needs Verification with Jordan"
-          }
-        ],
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Changed Status: \"Verified\" ➔ \"Needs Verification with Jordan\""
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Salary deposit)"
-      }
-    ],
+    "source_authority": "DesignCorp Payslip",
+    "verification_status": "Verified",
+    "notes": "Net weekly salary",
     "direction": "Inflow",
-    "deduction_day": "Fortnightly, Wednesday (Salary deposit)"
+    "deduction_day": "Every Wednesday (Salary deposit)"
   },
   {
     "id": "H-02",
     "owner": "Jordan",
-    "category": "Income",
-    "description": "SmartSalary Packaging",
-    "native_amount": 424.52,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "SmartSalary Statement",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "SmartSalary packaging",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T00:29:40.239Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "from": "Needs Verification with Alex",
-        "to": "Verified",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-05T00:31:55.532Z",
-        "actor": "Alex",
-        "field": "revert_to_baseline",
-        "from_amount": 424.52,
-        "to_amount": 424.52,
-        "reason": "Reverted to historical baseline"
-      },
-      {
-        "timestamp": "2026-10-05T00:31:58.672Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Needs Verification with Alex",
-        "to": "Verified",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-05T00:35:21.508Z",
-        "actor": "Alex",
-        "field": "baseline_promotion",
-        "reason": "This was incorrectly labeled and didn't need Alex's input. The numbers are verified through Salary Statements"
-      },
-      {
-        "timestamp": "2026-10-05T03:48:50.120Z",
-        "actor": "Jordan",
-        "field": "account_route",
-        "changes": [
-          {
-            "field": "account_route",
-            "label": "Route",
-            "from": "BOQ • Home Offset",
-            "to": "MQ • Jordan Personal"
-          }
-        ],
-        "from": "BOQ • Home Offset",
-        "to": "MQ • Jordan Personal",
-        "reason": "Changed Route: \"BOQ • Home Offset\" ➔ \"MQ • Jordan Personal\""
-      },
-      {
-        "timestamp": "2026-10-05T03:49:14.956Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "changes": [
-          {
-            "field": "verification_status",
-            "label": "Status",
-            "from": "Verified",
-            "to": "Needs Verification with Jordan"
-          }
-        ],
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Changed Status: \"Verified\" ➔ \"Needs Verification with Jordan\""
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Salary packaging)"
-      }
-    ],
-    "direction": "Inflow",
-    "deduction_day": "Fortnightly, Wednesday (Salary packaging)"
+    "category": "Housing",
+    "description": "Mortgage Repayment",
+    "native_amount": 620,
+    "cadence": "Weekly",
+    "account_route": "BOQ • Home Offset",
+    "source_authority": "Home Loan Facility",
+    "verification_status": "Verified",
+    "notes": "Home loan scheduled repayment",
+    "direction": "Outflow",
+    "deduction_day": "Every Thursday"
   },
   {
     "id": "H-03",
     "owner": "Jordan",
     "category": "Income",
-    "description": "Rent from Alex (Offset deposit)",
-    "native_amount": 150,
+    "description": "Alex Rent Contribution (Offset Inflow)",
+    "native_amount": 175,
     "cadence": "Weekly",
     "account_route": "BOQ • Home Offset",
-    "source_authority": "Alex Agreed Rent",
+    "source_authority": "Agreed Rent",
     "verification_status": "Verified",
-    "notes": "Rent from Alex ($150/wk offset deposit)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:00:58.429Z",
-        "actor": "Alex",
-        "field": "amount/cadence",
-        "changes": [
-          {
-            "field": "amount/cadence",
-            "label": "Amount & Cadence",
-            "from_amount": 300,
-            "from_cadence": "Fortnightly",
-            "to_amount": 150,
-            "to_cadence": "Weekly"
-          }
-        ],
-        "from_amount": 300,
-        "to_amount": 150,
-        "reason": "Changed amount: $300 (Fortnightly) ➔ $150 (Weekly)"
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Weekly, Tuesday (Rent from Alex)"
-      }
-    ],
-    "direction": "Inflow",
-    "deduction_day": "Weekly, Tuesday (Rent from Alex)"
+    "notes": "Alex weekly mortgage offset deposit",
+    "direction": "Inflow"
   },
   {
     "id": "H-04",
     "owner": "Jordan",
     "category": "Housing",
-    "description": "BOQ Mortgage (Full Loan Repayment)",
-    "native_amount": 1240.79,
+    "description": "Council Rates (Jordan Share)",
+    "native_amount": 50,
     "cadence": "Fortnightly",
-    "account_route": "BOQ • Home Offset",
-    "source_authority": "BOQ Mortgage Statement",
+    "account_route": "MQ • Joint Savings",
+    "source_authority": "Metro City Council",
     "verification_status": "Verified",
-    "notes": "BOQ mortgage repayment drawn from offset",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly (Loan direct debit)"
-      }
-    ],
-    "direction": "Outflow",
-    "deduction_day": "Fortnightly (Loan direct debit)"
+    "notes": "50% share of rates notice",
+    "direction": "Transfer",
+    "due_month": 2
   },
   {
     "id": "H-05",
     "owner": "Jordan",
     "category": "Housing",
-    "description": "Council Rates (Jordan Share)",
-    "native_amount": 45,
+    "description": "Water & Sewerage (Jordan Share)",
+    "native_amount": 40,
     "cadence": "Fortnightly",
     "account_route": "MQ • Joint Savings",
-    "source_authority": "City of Gold Coast Council (Acct **** 4025252 8)",
+    "source_authority": "Metro Water Corp",
     "verification_status": "Verified",
-    "notes": "Rates float to MQ Joint Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T07:45:19.018Z",
-        "actor": "Alex (Reconciled Records Patch)",
-        "reason": "Reconciled property bill cadence and due date synchronization",
-        "changes": [
-          {
-            "field": "source_authority",
-            "from": "Sinking Fund (50% share)",
-            "to": "City of Gold Coast Council (Acct 2 4025252 8)"
-          },
-          {
-            "field": "due_month",
-            "to": 2
-          },
-          {
-            "field": "notes",
-            "from": "Municipal rates share ($45.00/fn)",
-            "to": "Municipal rates share ($45.00/fn | $1,170/yr float). Half-yearly (Feb & Aug). Next due: ~17–20 Feb 2027. Annual household: $2,283.50/yr."
-          }
-        ]
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.506Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
+    "notes": "Quarterly water notice reserve",
     "direction": "Transfer",
-    "due_month": 2,
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
+    "due_month": 11
   },
   {
     "id": "H-06",
     "owner": "Jordan",
     "category": "Housing",
-    "description": "Water (Jordan Share)",
-    "native_amount": 35,
+    "description": "Strata / Body Corporate (Jordan Share)",
+    "native_amount": 80,
     "cadence": "Fortnightly",
     "account_route": "MQ • Joint Savings",
-    "source_authority": "City of Gold Coast Water (Acct ****)",
+    "source_authority": "Strata Care",
     "verification_status": "Verified",
-    "notes": "Water float to MQ Joint Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T07:45:19.018Z",
-        "actor": "Alex (Reconciled Records Patch)",
-        "reason": "Reconciled property bill cadence and due date synchronization",
-        "changes": [
-          {
-            "field": "source_authority",
-            "from": "Sinking Fund (50% share)",
-            "to": "City of Gold Coast Water (Acct 840252521)"
-          },
-          {
-            "field": "due_month",
-            "to": 11
-          },
-          {
-            "field": "notes",
-            "from": "Water consumption share ($35.00/fn)",
-            "to": "Water consumption share ($35.00/fn | $910/yr float). Quarterly (~90 days). Next due: ~20 Nov 2026. Annual household: ~$1,600/yr."
-          }
-        ]
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.507Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
+    "notes": "Quarterly strata notice reserve",
     "direction": "Transfer",
-    "due_month": 11,
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
+    "due_month": 11
   },
   {
     "id": "H-07",
     "owner": "Jordan",
-    "category": "Housing",
-    "description": "Body Corporate (Jordan Share)",
-    "native_amount": 70,
+    "category": "Savings",
+    "description": "Joint Home Deposit Float",
+    "native_amount": 400,
     "cadence": "Fortnightly",
     "account_route": "MQ • Joint Savings",
-    "source_authority": "Body Corporate Levies / Strata (DEFT 25335418)",
+    "source_authority": "Target Savings Plan",
     "verification_status": "Verified",
-    "notes": "Body corporate float to MQ Joint Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T07:45:19.018Z",
-        "actor": "Alex (Reconciled Records Patch)",
-        "reason": "Reconciled property bill cadence and due date synchronization",
-        "changes": [
-          {
-            "field": "source_authority",
-            "from": "Sinking Fund (50% share)",
-            "to": "Body Corporate Levies / Strata (DEFT 25335418)"
-          },
-          {
-            "field": "due_month",
-            "to": 11
-          },
-          {
-            "field": "notes",
-            "from": "Strata levy share ($70.00/fn)",
-            "to": "Strata levy share ($70.00/fn | $1,820/yr float). Quarterly (Jan, Apr, Aug, Nov). Next due: 30 Nov – 1 Dec 2026. Annual household: ~$3,640/yr."
-          }
-        ]
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.507Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
-    "direction": "Transfer",
-    "due_month": 11,
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
+    "notes": "Joint high-yield home purchase sinking fund",
+    "direction": "Transfer"
   },
   {
     "id": "H-08",
     "owner": "Jordan",
-    "category": "Savings",
-    "description": "Joint Savings Core (Jordan Share)",
-    "native_amount": 350,
+    "category": "Food",
+    "description": "Groceries & Household Supplies",
+    "native_amount": 300,
     "cadence": "Fortnightly",
-    "account_route": "MQ • Joint Savings",
-    "source_authority": "Joint Savings Strategy",
+    "account_route": "MQ • Joint Household",
+    "source_authority": "Household Budget",
     "verification_status": "Verified",
-    "notes": "Savings core float to MQ Joint Savings",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.507Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
+    "notes": "Jordan 50% share of household groceries",
+    "direction": "Transfer"
   },
   {
     "id": "H-09",
     "owner": "Jordan",
-    "category": "Food",
-    "description": "Groceries & Takeaway (Jordan Share)",
-    "native_amount": 300,
+    "category": "Utilities",
+    "description": "Electricity & Gas Float",
+    "native_amount": 60,
     "cadence": "Fortnightly",
     "account_route": "MQ • Joint Household",
-    "source_authority": "Agreed $300/wk household food pool",
+    "source_authority": "Energy Provider",
     "verification_status": "Verified",
-    "notes": "Groceries float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.507Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
+    "notes": "Household utilities float",
+    "direction": "Transfer"
   },
   {
     "id": "H-10",
     "owner": "Jordan",
-    "category": "Utilities",
-    "description": "Electricity (Jordan Share)",
-    "native_amount": 34,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Joint Household",
-    "source_authority": "Household Energy Usage",
-    "verification_status": "Verified",
-    "notes": "Electricity float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.507Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
-  },
-  {
-    "id": "H-11",
-    "owner": "Jordan",
-    "category": "Utilities",
-    "description": "Gas (Jordan Share)",
-    "native_amount": 17.5,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Joint Household",
-    "source_authority": "Household Gas Usage",
-    "verification_status": "Verified",
-    "notes": "Gas float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.507Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
-  },
-  {
-    "id": "H-12",
-    "owner": "Jordan",
-    "category": "Utilities",
-    "description": "Internet - Leaptel (Jordan Share)",
-    "native_amount": 20,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Joint Household",
-    "source_authority": "NAB Savings Statement ($20.00/fn verified)",
-    "verification_status": "Verified",
-    "notes": "Internet float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.507Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
-  },
-  {
-    "id": "H-13",
-    "owner": "Jordan",
-    "category": "Lifestyle",
-    "description": "Fitness Passport (Jordan Share)",
-    "native_amount": 31,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Joint Household",
-    "source_authority": "Fitness Passport Membership",
-    "verification_status": "Verified",
-    "notes": "Fitness passport float to MQ Joint Household",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      },
-      {
-        "timestamp": "2026-10-05T09:11:41.507Z",
-        "actor": "System / Antigravity",
-        "field": "direction",
-        "from": "Outflow",
-        "to": "Transfer",
-        "reason": "Standardized partner joint contribution to Transfer direction"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
-  },
-  {
-    "id": "H-14",
-    "owner": "Jordan",
-    "category": "Utilities",
-    "description": "Mobile Phone (Amaysim)",
-    "native_amount": 40,
-    "cadence": "Monthly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "Amaysim $40/mo Plan (Confirmed by User)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Amaysim mobile direct debit",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:53:58.996Z",
-        "actor": "Alex",
-        "field": "account_route",
-        "from": "BOQ • Home Offset",
-        "to": "MQ • Jordan Personal",
-        "reason": "Migrated off BOQ Offset: Jordan no longer uses BOQ account for transactions"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.454Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Monthly, 16th–20th (Direct Debit)"
-      }
-    ],
-    "direction": "Outflow",
-    "deduction_day": "Monthly, 16th–20th (Direct Debit)"
-  },
-  {
-    "id": "H-15",
-    "owner": "Jordan",
-    "category": "Insurances",
-    "description": "Health Insurance (Peoplecare)",
-    "native_amount": 105.89,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement ($105.89/fn verified)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Peoplecare health insurance",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:53:58.996Z",
-        "actor": "Alex",
-        "field": "account_route",
-        "from": "BOQ • Home Offset",
-        "to": "MQ • Jordan Personal",
-        "reason": "Migrated off BOQ Offset: Jordan no longer uses BOQ account for transactions"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly (Direct Debit)"
-      }
-    ],
-    "direction": "Outflow",
-    "deduction_day": "Fortnightly (Direct Debit)"
-  },
-  {
-    "id": "H-16",
-    "owner": "Jordan",
-    "category": "Pet",
-    "description": "Nala Cats (Food & Meds)",
-    "native_amount": 47.5,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "SMAXSHAE Budget ($95/mo across wet/dry/meds)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Cat food, litter and preventative meds ($47.50/fn)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-17",
-    "owner": "Jordan",
-    "category": "Health",
-    "description": "Purpose Chiropractic",
-    "native_amount": 82,
-    "cadence": "Weekly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement (26 weekly visits verified)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Weekly chiropractic care ($82.00/wk)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-18",
-    "owner": "Jordan",
-    "category": "Health",
-    "description": "Medication - Sotyktu (Specialist Script)",
-    "native_amount": 25,
-    "cadence": "Monthly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "Comes out of Everyday Account - $400 was Mounjaro",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Comes out of Everyday Account - $400 was Mounjaro",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-03T13:39:22.886Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "from": "Needs Verification with Jordan",
-        "to": "Verified",
-        "reason": "Comes out of Everyday Account - $400 was Mounjaro"
-      },
-      {
-        "timestamp": "2026-10-03T13:39:22.886Z",
-        "actor": "Jordan",
-        "field": "notes",
-        "from": "Biologic/specialist script - to verify with Jordan",
-        "to": "Comes out of Everyday Account - $400 was Mounjaro",
-        "reason": "Comes out of Everyday Account - $400 was Mounjaro"
-      },
-      {
-        "timestamp": "2026-10-03T13:39:22.886Z",
-        "actor": "Jordan",
-        "field": "source_authority",
-        "from": "Chemist Warehouse Statements (Major Script Component)",
-        "to": "Comes out of Everyday Account - $400 was Mounjaro",
-        "reason": "Comes out of Everyday Account - $400 was Mounjaro"
-      },
-      {
-        "timestamp": "2026-10-03T13:39:22.886Z",
-        "actor": "Jordan",
-        "field": "amount/cadence",
-        "from_amount": 400,
-        "from_cadence": "Monthly",
-        "to_amount": 25,
-        "to_cadence": "Monthly",
-        "reason": "Comes out of Everyday Account - $400 was Mounjaro"
-      },
-      {
-        "timestamp": "2026-10-03T13:40:14.129Z",
-        "actor": "Jordan",
-        "field": "baseline_promotion",
-        "reason": "$400 was Mounjaro"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-19",
-    "owner": "Jordan",
-    "category": "Health",
-    "description": "Medication - Sertraline",
-    "native_amount": 7.1,
-    "cadence": "Monthly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "PBS General Script ($7.10/mo)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Pharmacy prescription - to verify with Jordan",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-03T13:40:29.789Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "from": "Needs Verification with Jordan",
-        "to": "Verified",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-03T13:40:39.121Z",
-        "actor": "Jordan",
-        "field": "baseline_promotion",
-        "reason": "shae said so"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-20",
-    "owner": "Jordan",
-    "category": "Health",
-    "description": "Medication - The Pill / Contraceptive",
-    "native_amount": 25,
-    "cadence": "Monthly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "PBS/Private Script (~$25/mo)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Contraceptive script - to verify with Jordan",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-03T13:40:45.454Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "from": "Needs Verification with Jordan",
-        "to": "Verified",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-03T13:40:58.312Z",
-        "actor": "Jordan",
-        "field": "baseline_promotion",
-        "reason": "shae said so close enough"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-21",
-    "owner": "Jordan",
-    "category": "Health",
-    "description": "Medication - Mounjaro",
-    "native_amount": 100,
-    "cadence": "Weekly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "Chemist Warehouse Account Balance",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "It's every 5 weeks spaced out - so weekly $100",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-03T13:44:46.262Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "from": "Needs Verification with Jordan",
-        "to": "Verified",
-        "reason": "It's every 5 weeks spaced out - so weekly $100"
-      },
-      {
-        "timestamp": "2026-10-03T13:44:46.262Z",
-        "actor": "Jordan",
-        "field": "description",
-        "from": "Medication - Other Pharmacy & Care",
-        "to": "Medication - Mounjaro",
-        "reason": "It's every 5 weeks spaced out - so weekly $100"
-      },
-      {
-        "timestamp": "2026-10-03T13:44:46.262Z",
-        "actor": "Jordan",
-        "field": "notes",
-        "from": "Routine pharmacy & incidentals - to verify with Jordan",
-        "to": "It's every 5 weeks spaced out - so weekly $100",
-        "reason": "It's every 5 weeks spaced out - so weekly $100"
-      },
-      {
-        "timestamp": "2026-10-03T13:44:46.262Z",
-        "actor": "Jordan",
-        "field": "amount/cadence",
-        "from_amount": 122.9,
-        "from_cadence": "Monthly",
-        "to_amount": 100,
-        "to_cadence": "Weekly",
-        "reason": "It's every 5 weeks spaced out - so weekly $100"
-      },
-      {
-        "timestamp": "2026-10-03T13:44:52.428Z",
-        "actor": "Jordan",
-        "field": "baseline_promotion",
-        "reason": "It's every 5 weeks spaced out - so weekly $100"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-22",
-    "owner": "Jordan",
-    "category": "Grooming",
-    "description": "Hair Salon",
-    "native_amount": 400,
-    "cadence": "Quarterly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "SMAXSHAE Budget ($150.00/mo)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Routine salon appointments - just for the hair",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-03T13:41:12.552Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "from": "Needs Verification with Jordan",
-        "to": "Verified",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-03T13:41:46.136Z",
-        "actor": "Jordan",
-        "field": "notes",
-        "from": "Routine salon appointments - to verify with Jordan",
-        "to": "Routine salon appointments - just for the hair",
-        "reason": "Changed notes"
-      },
-      {
-        "timestamp": "2026-10-03T13:41:46.136Z",
-        "actor": "Jordan",
-        "field": "amount/cadence",
-        "from_amount": 150,
-        "from_cadence": "Monthly",
-        "to_amount": 400,
-        "to_cadence": "Quarterly",
-        "reason": "Standard edit (Below threshold)"
-      },
-      {
-        "timestamp": "2026-10-03T13:41:55.276Z",
-        "actor": "Jordan",
-        "field": "baseline_promotion",
-        "reason": "shae advised verbally"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-23",
-    "owner": "Jordan",
-    "category": "Grooming",
-    "description": "Nails - Fingers",
-    "native_amount": 75,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement (Oasis Pamper Nails & Gold Class)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Manicure maintenance ($75.00/fn | $150.00/mo)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-24",
-    "owner": "Jordan",
-    "category": "Grooming",
-    "description": "Nails - Toes",
-    "native_amount": 65,
-    "cadence": "Monthly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "SMAXSHAE Budget ($65.00/mo)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Pedicure maintenance - to verify with Jordan",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-03T13:42:07.032Z",
-        "actor": "Jordan",
-        "field": "verification_status",
-        "from": "Needs Verification with Jordan",
-        "to": "Verified",
-        "reason": "Inline update: verification_status"
-      },
-      {
-        "timestamp": "2026-10-03T13:42:15.863Z",
-        "actor": "Jordan",
-        "field": "baseline_promotion",
-        "reason": "shae said so"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-25",
-    "owner": "Jordan",
-    "category": "Grooming",
-    "description": "Cosmetic / Skin Clinic",
-    "native_amount": 200,
-    "cadence": "Monthly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement (SMP*AUZ Skin Clinic Hope Island)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Dermal / cosmetic clinic treatments ($200.00/mo)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-26",
-    "owner": "Jordan",
-    "category": "Lifestyle",
-    "description": "Wine & Bubbles",
-    "native_amount": 60,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement (Dan Murphys & Liquorland)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Social drinks & wine ($60.00/fn | $130.00/mo)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-27",
-    "owner": "Jordan",
-    "category": "Lifestyle",
-    "description": "Accor Vacation Club (AVC Levies)",
-    "native_amount": 470.77,
-    "cadence": "Quarterly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement (21 Jan, 17 Apr, 18 Jul verified)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Quarterly AVC Club Levies ($470.77/qtr = $72.43/fn)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:53:58.996Z",
-        "actor": "Alex",
-        "field": "account_route",
-        "from": "BOQ • Home Offset",
-        "to": "MQ • Jordan Personal",
-        "reason": "Migrated off BOQ Offset: Jordan no longer uses BOQ account for transactions"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-28",
-    "owner": "Jordan",
-    "category": "Lifestyle",
-    "description": "Accor Plus Membership",
-    "native_amount": 349,
-    "cadence": "Annual",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement (13 Feb 2026 verified)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Annual Accor Plus dining & travel membership ($349/yr)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:53:58.996Z",
-        "actor": "Alex",
-        "field": "account_route",
-        "from": "BOQ • Home Offset",
-        "to": "MQ • Jordan Personal",
-        "reason": "Migrated off BOQ Offset: Jordan no longer uses BOQ account for transactions"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-29",
-    "owner": "Jordan",
-    "category": "Subscriptions",
-    "description": "Samsung The Frame Art Store",
-    "native_amount": 5.99,
-    "cadence": "Monthly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement (PAYPAL *SAMSUNGELEC $5.99/mo)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "The Frame TV Art subscription ($5.99/mo) (Paid via PayPal)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-30",
-    "owner": "Jordan",
-    "category": "Subscriptions",
-    "description": "Mater Prize Home Lotteries",
-    "native_amount": 10,
-    "cadence": "Monthly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "NAB Savings Statement (PAYPAL *MATERLOTT $10.00/mo)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Charity home lottery ticket ($10.00/mo) (Paid via PayPal)",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-31",
-    "owner": "Jordan",
-    "category": "Debt",
-    "description": "ZipPay Repayment",
-    "native_amount": 40,
-    "cadence": "Fortnightly",
-    "account_route": "MQ • Jordan Personal",
-    "source_authority": "BOQ Offset Statement ($40.00/fn verified)",
-    "verification_status": "Needs Verification with Jordan",
-    "notes": "Automatic fortnightly debt reduction ($40.00/fn) - See note",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-05T03:53:58.996Z",
-        "actor": "Alex",
-        "field": "account_route",
-        "from": "BOQ • Home Offset",
-        "to": "MQ • Jordan Personal",
-        "reason": "Migrated off BOQ Offset: Jordan no longer uses BOQ account for transactions"
-      },
-      {
-        "timestamp": "2026-10-05T03:58:34.455Z",
-        "actor": "Alex",
-        "field": "verification_status",
-        "from": "Verified",
-        "to": "Needs Verification with Jordan",
-        "reason": "Jordan updating name & swapping personal accounts over"
-      },
-      {
-        "timestamp": "2026-10-05T07:40:00.626Z",
-        "actor": "Alex",
-        "field": "notes",
-        "changes": [
-          {
-            "field": "notes",
-            "label": "Notes",
-            "from": "Automatic fortnightly debt reduction ($40.00/fn)",
-            "to": "Automatic fortnightly debt reduction ($40.00/fn) - See note"
-          }
-        ],
-        "from": "Automatic fortnightly debt reduction ($40.00/fn)",
-        "to": "Automatic fortnightly debt reduction ($40.00/fn) - See note",
-        "reason": "How much left to pay? Can we just pay off and close?"
-      }
-    ],
-    "direction": "Outflow"
-  },
-  {
-    "id": "H-32",
-    "owner": "Jordan",
-    "category": "Personal",
-    "description": "Personal Savings",
-    "native_amount": 250,
+    "category": "Savings",
+    "description": "Personal Emergency Fund",
+    "native_amount": 300,
     "cadence": "Fortnightly",
     "account_route": "MQ • Jordan Savings",
-    "source_authority": "Agreed Budget Allocation ($125.00/wk)",
+    "source_authority": "Personal Buffer Target",
     "verification_status": "Verified",
-    "notes": "Discretionary allowance",
-    "audit_trail": [
-      {
-        "timestamp": "2026-10-03T13:47:16.602Z",
-        "actor": "Jordan",
-        "field": "description",
-        "from": "Discretionary Allowance",
-        "to": "Personal Savings",
-        "reason": "Changed description"
-      },
-      {
-        "timestamp": "2026-10-03T13:47:36.777Z",
-        "actor": "Jordan",
-        "field": "baseline_promotion",
-        "reason": "Personal Savings is clearer"
-      },
-      {
-        "timestamp": "2026-10-05T08:54:42.308Z",
-        "actor": "Alex & Antigravity",
-        "field": "schedule_synchronization",
-        "reason": "Reconciled deduction day: Fortnightly, Wednesday (Pending Jordan confirmation)"
-      }
-    ],
-    "direction": "Transfer",
-    "deduction_day": "Fortnightly, Wednesday (Pending Jordan confirmation)"
+    "notes": "Jordan high-interest liquid safety buffer",
+    "direction": "Transfer"
   }
 ]

@@ -34,7 +34,7 @@ interface StoredRouteBalance {
 
 type RouteBalancesMap = Record<string, StoredRouteBalance>;
 
-const STORAGE_KEY = 'maxwell_sinking_route_balances';
+const STORAGE_KEY = 'demo_sinking_route_balances';
 
 function getStoredBalances(): RouteBalancesMap {
   try {
@@ -64,12 +64,12 @@ function formatTimestamp(isoStr?: string): string {
 }
 
 const SINKING_ROUTES = [
-  { id: 'ING • Everyday', name: 'ING • Everyday (Salary Hub)', desc: 'Stephen Primary Salary ($1,489/wk), Dispersals & Card Spend' },
-  { id: 'ING • Savings', name: 'ING • Savings', desc: 'Stephen Vehicle (Rego/Tyres) & Personal Savings' },
+  { id: 'ING • Everyday', name: 'ING • Everyday (Salary Hub)', desc: 'Alex Primary Salary ($1,489/wk), Dispersals & Card Spend' },
+  { id: 'ING • Savings', name: 'ING • Savings', desc: 'Alex Vehicle (Rego/Tyres) & Personal Savings' },
   { id: 'MQ • Joint Savings', name: 'MQ • Joint Savings', desc: 'Council Rates, Water, Strata & House Deposit' },
   { id: 'MQ • Joint Household', name: 'MQ • Joint Household', desc: 'Living, Groceries, Electricity & Internet' },
-  { id: 'MQ • Shae Savings', name: 'MQ • Shae Savings', desc: 'Shae Personal Emergency & Sinking Fund' },
-  { id: 'BOQ • Home Offset', name: 'BOQ • Home Offset', desc: 'Pure Mortgage Offset Facility (Shae & Stephen Rent)' },
+  { id: 'MQ • Jordan Savings', name: 'MQ • Jordan Savings', desc: 'Jordan Personal Emergency & Sinking Fund' },
+  { id: 'BOQ • Home Offset', name: 'BOQ • Home Offset', desc: 'Pure Mortgage Offset Facility (Jordan & Alex Rent)' },
   { id: 'ALL', name: 'All Sinking Routes', desc: 'Combined Overview across all Reserve Accounts' }
 ];
 
@@ -190,7 +190,7 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
     const dispersals = [
       {
         target: 'BOQ • Home Offset',
-        purpose: 'Rent to Shae (Offset Shield)',
+        purpose: 'Rent to Jordan (Offset Shield)',
         amount: 0,
         color: 'text-blue-400',
         borderColor: 'border-blue-500/20',
@@ -235,7 +235,7 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
     let dispersalsTotal = 0;
 
     items.forEach(i => {
-      if (i.owner !== 'Stephen' || i.verification_status === 'Archived / Paid Off' || i.id === 'S-01') return;
+      if (i.owner !== 'Alex' || i.verification_status === 'Archived / Paid Off' || i.id === 'S-01') return;
       const m = calculateMetrics(i.native_amount, i.cadence).weekly;
       if (m <= 0) return;
 
@@ -285,8 +285,8 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
       i.account_route === 'MQ • Joint Household'
     );
 
-    let stephenInflow = 0;
-    let shaeInflow = 0;
+    let alexInflow = 0;
+    let jordanInflow = 0;
 
     const getJhTiming = (name: string) => {
       if (/Fitness/i.test(name)) return 'Fortnightly, Fri ($68 notice)';
@@ -308,12 +308,12 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
 
     jhItems.forEach(i => {
       const m = calculateMetrics(i.native_amount, i.cadence);
-      if (i.owner === 'Stephen') stephenInflow += m.weekly;
-      if (i.owner === 'Shae') shaeInflow += m.weekly;
+      if (i.owner === 'Alex') alexInflow += m.weekly;
+      if (i.owner === 'Jordan') jordanInflow += m.weekly;
 
       const rootName = i.description
-        .replace(/\s*\(Stephen\s*Share\)/i, '')
-        .replace(/\s*\(Shae\s*Share\)/i, '')
+        .replace(/\s*\(Alex\s*Share\)/i, '')
+        .replace(/\s*\(Jordan\s*Share\)/i, '')
         .replace(/\s*\(Joint\s*Share\)/i, '')
         .trim();
 
@@ -335,11 +335,11 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
 
     const expenses = Array.from(expenseMap.values()).sort((a, b) => b.annual - a.annual);
     const totalWeeklyOutflow = expenses.reduce((sum, e) => sum + e.weekly, 0);
-    const totalWeeklyInflow = stephenInflow + shaeInflow;
+    const totalWeeklyInflow = alexInflow + jordanInflow;
 
     return {
-      stephenInflow,
-      shaeInflow,
+      alexInflow,
+      jordanInflow,
       totalWeeklyInflow,
       totalAnnualInflow: totalWeeklyInflow * 52,
       expenses,
@@ -361,7 +361,7 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
         );
       }
       if (selectedRoute === 'ING • Everyday') {
-        return item.owner === 'Stephen' && (
+        return item.owner === 'Alex' && (
           item.account_route === 'ING • Everyday' || 
           item.account_route === 'ING • Direct Debit' ||
           item.direction === 'Transfer'
@@ -817,7 +817,7 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
                   <span>Master Salary Inflow & Outbound Dispersal Engine</span>
                 </CardTitle>
                 <CardDescription className="text-sm text-zinc-400 mt-1">
-                  How Stephen's weekly salary disperses across reserve accounts, joint bills, direct debits, and everyday card spend.
+                  How Alex's weekly salary disperses across reserve accounts, joint bills, direct debits, and everyday card spend.
                 </CardDescription>
               </div>
               <Badge variant="outline" className="bg-emerald-500/10 border-emerald-500/30 text-emerald-300 font-mono text-sm px-3 py-1.5 w-fit font-semibold">
@@ -904,14 +904,14 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
             {/* Top Level Summary Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
               <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-1">
-                <span className="text-zinc-400 block text-xs font-semibold uppercase tracking-wider">1. Stephen Funding Share</span>
-                <span className="text-2xl font-bold font-mono text-emerald-400 block">+{formatCurrency(jointHouseholdSummary.stephenInflow)}</span>
-                <span className="text-xs text-zinc-400 block">/wk (${formatCurrency(jointHouseholdSummary.stephenInflow * 52)}/yr)</span>
+                <span className="text-zinc-400 block text-xs font-semibold uppercase tracking-wider">1. Alex Funding Share</span>
+                <span className="text-2xl font-bold font-mono text-emerald-400 block">+{formatCurrency(jointHouseholdSummary.alexInflow)}</span>
+                <span className="text-xs text-zinc-400 block">/wk (${formatCurrency(jointHouseholdSummary.alexInflow * 52)}/yr)</span>
               </div>
               <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-1">
-                <span className="text-zinc-400 block text-xs font-semibold uppercase tracking-wider">2. Shae Funding Share</span>
-                <span className="text-2xl font-bold font-mono text-rose-400 block">+{formatCurrency(jointHouseholdSummary.shaeInflow)}</span>
-                <span className="text-xs text-zinc-400 block">/wk (${formatCurrency(jointHouseholdSummary.shaeInflow * 52)}/yr)</span>
+                <span className="text-zinc-400 block text-xs font-semibold uppercase tracking-wider">2. Jordan Funding Share</span>
+                <span className="text-2xl font-bold font-mono text-rose-400 block">+{formatCurrency(jointHouseholdSummary.jordanInflow)}</span>
+                <span className="text-xs text-zinc-400 block">/wk (${formatCurrency(jointHouseholdSummary.jordanInflow * 52)}/yr)</span>
               </div>
               <div className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800 space-y-1">
                 <span className="text-zinc-400 block text-xs font-semibold uppercase tracking-wider">3. Total Living Outflows</span>
@@ -1606,7 +1606,7 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
               </CardTitle>
               <CardDescription className="text-xs text-zinc-400 mt-0.5">
                 {selectedRoute === 'ING • Everyday'
-                  ? "Stephen's salary inflow, automated direct debits, regular card spend, and outbound transfers."
+                  ? "Alex's salary inflow, automated direct debits, regular card spend, and outbound transfers."
                   : selectedRoute === 'MQ • Joint Household'
                   ? 'Household living costs (groceries, electricity, gas, internet, gym) and partner funding shares.'
                   : selectedRoute === 'MQ • Joint Savings' || selectedRoute === 'ING • Savings'
@@ -1722,7 +1722,7 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
                             <div className="text-xs text-zinc-400 flex items-center gap-2 mt-0.5">
                               <span className="font-mono text-zinc-500">{item.id}</span>
                               <span>•</span>
-                              <span className={item.owner === 'Stephen' ? 'text-emerald-400 font-medium' : 'text-rose-400 font-medium'}>{item.owner}</span>
+                              <span className={item.owner === 'Alex' ? 'text-emerald-400 font-medium' : 'text-rose-400 font-medium'}>{item.owner}</span>
                               <span>•</span>
                               <span>{item.category}</span>
                             </div>
@@ -1768,7 +1768,7 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
                     const isTransfer = item.direction === 'Transfer';
                     const isEverydayTransferOut = selectedRoute === 'ING • Everyday' && isTransfer;
                     const isRetainedSavings = (selectedRoute === 'ING • Savings' && (item.id === 'S-38' || item.description.toLowerCase().includes('discretionary allowance'))) ||
-                                              (selectedRoute === 'MQ • Shae Savings' && (item.id === 'H-32' || item.description.toLowerCase().includes('personal savings')));
+                                              (selectedRoute === 'MQ • Jordan Savings' && (item.id === 'H-32' || item.description.toLowerCase().includes('personal savings')));
                     const isReserveFunding = (!isEverydayTransferOut && isTransfer) || isRetainedSavings;
 
                     return (
@@ -1805,7 +1805,7 @@ export default function SinkingFundEngine({ items, onUpdateItem, isLocked = fals
                         <div className="text-xs text-zinc-400 flex items-center gap-2 mt-0.5">
                           <span className="font-mono text-zinc-500">{item.id}</span>
                           <span>•</span>
-                          <span className={item.owner === 'Stephen' ? 'text-emerald-400 font-medium' : 'text-rose-400 font-medium'}>{item.owner}</span>
+                          <span className={item.owner === 'Alex' ? 'text-emerald-400 font-medium' : 'text-rose-400 font-medium'}>{item.owner}</span>
                           <span>•</span>
                           <span>{item.category}</span>
                           <span>•</span>

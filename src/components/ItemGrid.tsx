@@ -54,16 +54,16 @@ const MASTER_ROUTES = [
   'ING • Savings',
   'MQ • Joint Household',
   'MQ • Joint Savings',
-  'MQ • Shae Personal',
-  'MQ • Shae Savings',
-  'MQ • Stephen Personal',
+  'MQ • Jordan Personal',
+  'MQ • Jordan Savings',
+  'MQ • Alex Personal',
   'BOQ • Home Offset',
   'UBank • High Interest',
   'New Mortgage • Offset'
 ];
 
 export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpdate, onRevert, onPromote, onApproveBaseline, onRejectBaseline, onCreate, onDelete, onDeleteAuditLog, onClearAuditLogs, sessionActor }: Props) {
-  const [globalCadence, setGlobalCadence] = useState<Cadence>(owner === 'Shae' ? 'Fortnightly' : 'Weekly');
+  const [globalCadence, setGlobalCadence] = useState<Cadence>(owner === 'Jordan' ? 'Fortnightly' : 'Weekly');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<FinancialItem>>({});
   const [editReason, setEditReason] = useState<string>('');
@@ -201,11 +201,11 @@ export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpd
       if (!status || lower.startsWith('verified')) {
           return { bg: 'bg-muted/40', text: 'text-muted-foreground/80', border: 'border-border/40', label: '✓ ' + (status || 'Verified'), icon: '✓' };
       }
-      if (lower.includes('shae')) {
-          return { bg: 'bg-rose-500/10', text: 'text-rose-400 dark:text-rose-300', border: 'border-rose-500/25', label: '⚠️ Needs Shae', icon: '⚠️' };
+      if (lower.includes('jordan')) {
+          return { bg: 'bg-rose-500/10', text: 'text-rose-400 dark:text-rose-300', border: 'border-rose-500/25', label: '⚠️ Needs Jordan', icon: '⚠️' };
       }
-      if (lower.includes('stephen')) {
-          return { bg: 'bg-yellow-500/10', text: 'text-yellow-200 dark:text-yellow-200', border: 'border-yellow-500/25', label: '⚠️ Needs Stephen', icon: '⚠️' };
+      if (lower.includes('alex')) {
+          return { bg: 'bg-yellow-500/10', text: 'text-yellow-200 dark:text-yellow-200', border: 'border-yellow-500/25', label: '⚠️ Needs Alex', icon: '⚠️' };
       }
       return { bg: 'bg-yellow-500/10', text: 'text-yellow-200 dark:text-yellow-200', border: 'border-yellow-500/25', label: '⚠️ Unverified', icon: '⚠️' };
   };
@@ -264,18 +264,18 @@ export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpd
           bankName = 'MQ • Joint Savings';
           pipColor = 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.6)]';
           tooltip = 'Macquarie Joint Savings & Sinking Fund';
-      } else if (lower.includes('shae savings')) {
-          bankName = 'MQ • Shae Savings';
+      } else if (lower.includes('jordan savings')) {
+          bankName = 'MQ • Jordan Savings';
           pipColor = 'bg-fuchsia-400 ring-1 ring-fuchsia-300 shadow-[0_0_6px_rgba(232,121,249,0.6)]';
-          tooltip = 'Macquarie Shae Personal Savings';
-      } else if (lower.includes('shae') && lower.includes('mq')) {
-          bankName = 'MQ • Shae';
+          tooltip = 'Macquarie Jordan Personal Savings';
+      } else if (lower.includes('jordan') && lower.includes('mq')) {
+          bankName = 'MQ • Jordan';
           pipColor = 'bg-rose-400 shadow-[0_0_6px_rgba(251,113,133,0.6)]';
-          tooltip = 'Macquarie Shae Personal Transaction';
-      } else if (lower.includes('stephen') && lower.includes('mq')) {
-          bankName = 'MQ • Stephen';
+          tooltip = 'Macquarie Jordan Personal Transaction';
+      } else if (lower.includes('alex') && lower.includes('mq')) {
+          bankName = 'MQ • Alex';
           pipColor = 'bg-slate-400 ring-1 ring-slate-300';
-          tooltip = 'Macquarie Stephen Personal Account';
+          tooltip = 'Macquarie Alex Personal Account';
       } else if (lower.includes('ing')) {
           if (lower.includes('direct debit')) {
               bankName = 'ING • Direct Debit';
@@ -445,8 +445,8 @@ export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpd
                                     <select value={editForm.verification_status || ''} onChange={e => setEditForm({...editForm, verification_status: e.target.value})} className="w-full p-2 border border-border rounded-md font-semibold text-sm bg-card">
                                         <option value="Verified">Verified</option>
                                         <option value="Archived / Paid Off">🎉 Archived / Paid Off</option>
-                                        <option value="Needs Verification with Shae">Needs Verification with Shae</option>
-                                        <option value="Needs Verification with Stephen">Needs Verification with Stephen</option>
+                                        <option value="Needs Verification with Jordan">Needs Verification with Jordan</option>
+                                        <option value="Needs Verification with Alex">Needs Verification with Alex</option>
                                     </select>
                                 </div>
                                 <div>
@@ -594,8 +594,8 @@ export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpd
                           >
                               <option value="Verified">Verified</option>
                               <option value="Archived / Paid Off">🎉 Archived / Paid Off</option>
-                              <option value="Needs Verification with Shae">Needs Verification with Shae</option>
-                              <option value="Needs Verification with Stephen">Needs Verification with Stephen</option>
+                              <option value="Needs Verification with Jordan">Needs Verification with Jordan</option>
+                              <option value="Needs Verification with Alex">Needs Verification with Alex</option>
                           </select>
                       )}
                   </div>
@@ -879,8 +879,8 @@ export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpd
                                 .reverse()
                                 .map(({ log, originalIndex }) => {
                                     const actorLower = (log.actor || '').toLowerCase();
-                                    const isStephen = actorLower.includes('stephen');
-                                    const isShae = actorLower.includes('shae');
+                                    const isAlex = actorLower.includes('alex');
+                                    const isJordan = actorLower.includes('jordan');
                                     
                                     let actionBadge = null;
                                     if (log.action === 'revert') {
@@ -907,13 +907,13 @@ export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpd
                                                     <span className="font-mono text-[10px] text-zinc-500 bg-zinc-950 px-1.5 py-0.5 rounded border border-zinc-800">
                                                         Rev #{originalIndex + 1}
                                                     </span>
-                                                    {isStephen ? (
+                                                    {isAlex ? (
                                                         <Badge className="bg-emerald-500/15 text-emerald-300 border-emerald-500/30 text-[10px] font-mono">
-                                                            Stephen
+                                                            Alex
                                                         </Badge>
-                                                    ) : isShae ? (
+                                                    ) : isJordan ? (
                                                         <Badge className="bg-rose-500/15 text-rose-300 border-rose-500/30 text-[10px] font-mono">
-                                                            Shae
+                                                            Jordan
                                                         </Badge>
                                                     ) : (
                                                         <Badge className="bg-zinc-800 text-zinc-300 border-zinc-700 text-[10px] font-mono">
@@ -1242,7 +1242,7 @@ export default function ItemGrid({ items, baselines = [], owner, isLocked, onUpd
               <div className="mt-2 pt-2 border-t border-border/40 space-y-0.5">
                   <div className="text-[10.5px] font-mono text-muted-foreground leading-tight">Net verified salary & inflows</div>
                   <div className="text-[9.5px] text-muted-foreground/70 leading-tight">
-                      {owner === 'Shae' ? 'Nursing Salary + SmartSalary + Stephen Rent ($150/wk)' : 'Primary: ING Net Salary ($1,489.08/wk)'}
+                      {owner === 'Jordan' ? 'Nursing Salary + SmartSalary + Alex Rent ($150/wk)' : 'Primary: ING Net Salary ($1,489.08/wk)'}
                   </div>
               </div>
           </Card>

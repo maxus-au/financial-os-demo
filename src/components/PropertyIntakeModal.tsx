@@ -50,8 +50,8 @@ export default function PropertyIntakeModal({
   const [bathrooms, setBathrooms] = useState<string>('');
   const [carSpaces, setCarSpaces] = useState<string>('');
   const [status, setStatus] = useState<PropertyStatus>('Priority');
-  const [ratingStephen, setRatingStephen] = useState<number>(0);
-  const [ratingShae, setRatingShae] = useState<number>(0);
+  const [ratingAlex, setRatingAlex] = useState<number>(0);
+  const [ratingJordan, setRatingJordan] = useState<number>(0);
   const [notes, setNotes] = useState('');
   
   const [extractSuccess, setExtractSuccess] = useState<string | null>(null);
@@ -69,8 +69,8 @@ export default function PropertyIntakeModal({
       setBathrooms(initialData.bathrooms ? initialData.bathrooms.toString() : '');
       setCarSpaces(initialData.car_spaces ? initialData.car_spaces.toString() : '');
       setStatus(initialData.status || 'Watching');
-      setRatingStephen(initialData.rating_stephen || 0);
-      setRatingShae(initialData.rating_shae || 0);
+      setRatingAlex(initialData.rating_alex || 0);
+      setRatingJordan(initialData.rating_jordan || 0);
       setNotes(initialData.notes || '');
       setPasteSnippet(initialData.source_snippet || '');
     } else {
@@ -83,8 +83,8 @@ export default function PropertyIntakeModal({
       setBathrooms('');
       setCarSpaces('');
       setStatus('Priority');
-      setRatingStephen(0);
-      setRatingShae(0);
+      setRatingAlex(0);
+      setRatingJordan(0);
       setNotes('');
       setPasteSnippet('');
     }
@@ -104,7 +104,7 @@ export default function PropertyIntakeModal({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, address, guidePrice, rentWeekly, bedrooms, bathrooms, carSpaces, status, ratingStephen, ratingShae, notes]);
+  }, [isOpen, address, guidePrice, rentWeekly, bedrooms, bathrooms, carSpaces, status, ratingAlex, ratingJordan, notes]);
 
   const handleParseSnippet = (textToParse?: string) => {
     const raw = textToParse !== undefined ? textToParse : pasteSnippet;
@@ -146,10 +146,10 @@ export default function PropertyIntakeModal({
     }
 
     // Default actor rating to 4 stars on intake if none set
-    if (sessionActor === 'Shae' && ratingShae === 0) {
-      setRatingShae(4);
-    } else if (sessionActor === 'Stephen' && ratingStephen === 0) {
-      setRatingStephen(4);
+    if (sessionActor === 'Jordan' && ratingJordan === 0) {
+      setRatingJordan(4);
+    } else if (sessionActor === 'Alex' && ratingAlex === 0) {
+      setRatingAlex(4);
     }
 
     if (extractedItems.length > 0) {
@@ -195,8 +195,8 @@ export default function PropertyIntakeModal({
       bathrooms: bathsNum && !isNaN(bathsNum) ? bathsNum : undefined,
       car_spaces: carsNum && !isNaN(carsNum) ? carsNum : undefined,
       status,
-      rating_stephen: ratingStephen,
-      rating_shae: ratingShae,
+      rating_alex: ratingAlex,
+      rating_jordan: ratingJordan,
       notes: notes.trim() || undefined,
       source_snippet: pasteSnippet.trim() || undefined,
     };
@@ -470,17 +470,17 @@ Example: 'Hey babe check this out: https://www.realestate.com.au/... 14 Oceanic 
               </div>
             </div>
 
-            {/* Ratings: Stephen & Shae */}
+            {/* Ratings: Alex & Jordan */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 rounded-xl bg-muted/30 border border-border">
-              {/* Stephen Rating */}
+              {/* Alex Rating */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    Stephen's Rating
+                    Alex's Rating
                   </span>
                   <span className="text-xs font-mono font-bold text-foreground">
-                    {ratingStephen > 0 ? `${ratingStephen} / 5` : 'Unrated'}
+                    {ratingAlex > 0 ? `${ratingAlex} / 5` : 'Unrated'}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -488,13 +488,13 @@ Example: 'Hey babe check this out: https://www.realestate.com.au/... 14 Oceanic 
                     <button
                       key={star}
                       type="button"
-                      onClick={() => setRatingStephen(ratingStephen === star ? 0 : star)}
+                      onClick={() => setRatingAlex(ratingAlex === star ? 0 : star)}
                       className="p-1 text-muted-foreground hover:text-amber-400 transition-colors cursor-pointer"
                       title={`${star} Star`}
                     >
                       <Star
                         className={`w-5 h-5 ${
-                          star <= ratingStephen
+                          star <= ratingAlex
                             ? 'text-amber-400 fill-amber-400'
                             : 'text-muted-foreground/40'
                         }`}
@@ -504,15 +504,15 @@ Example: 'Hey babe check this out: https://www.realestate.com.au/... 14 Oceanic 
                 </div>
               </div>
 
-              {/* Shae Rating */}
+              {/* Jordan Rating */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-rose-500" />
-                    Shae's Rating
+                    Jordan's Rating
                   </span>
                   <span className="text-xs font-mono font-bold text-foreground">
-                    {ratingShae > 0 ? `${ratingShae} / 5` : 'Unrated'}
+                    {ratingJordan > 0 ? `${ratingJordan} / 5` : 'Unrated'}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -520,13 +520,13 @@ Example: 'Hey babe check this out: https://www.realestate.com.au/... 14 Oceanic 
                     <button
                       key={star}
                       type="button"
-                      onClick={() => setRatingShae(ratingShae === star ? 0 : star)}
+                      onClick={() => setRatingJordan(ratingJordan === star ? 0 : star)}
                       className="p-1 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
                       title={`${star} Star`}
                     >
                       <Star
                         className={`w-5 h-5 ${
-                          star <= ratingShae
+                          star <= ratingJordan
                             ? 'text-rose-400 fill-rose-400'
                             : 'text-muted-foreground/40'
                         }`}

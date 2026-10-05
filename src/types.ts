@@ -51,8 +51,8 @@ export interface ProspectiveProperty {
   bathrooms?: number;
   car_spaces?: number;
   status: PropertyStatus;
-  rating_stephen: number; // 0-5
-  rating_shae: number; // 0-5
+  rating_alex: number; // 0-5
+  rating_jordan: number; // 0-5
   notes?: string;
   source_snippet?: string;
   created_at: string;

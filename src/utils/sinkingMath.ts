@@ -124,15 +124,15 @@ function isPeriodicSinkingBill(item: FinancialItem): { isSinking: boolean; effec
   const combined = `${desc} ${notes}`;
   const metrics = calculateMetrics(item.native_amount, item.cadence);
 
-  // BMW Rego
+  // Car Rego
   if (combined.includes('rego') || combined.includes('registration')) {
     return { isSinking: true, effectiveCadence: 'Annual', lumpSumAmount: metrics.annual || 1092 };
   }
-  // BMW Tyres
+  // Car Tyres
   if (combined.includes('tyre')) {
     return { isSinking: true, effectiveCadence: 'Annual', lumpSumAmount: metrics.annual || 728 };
   }
-  // BMW Servicing
+  // Car Servicing
   if (combined.includes('servicing')) {
     return { isSinking: true, effectiveCadence: 'Annual', lumpSumAmount: metrics.annual || 0 };
   }
@@ -183,7 +183,7 @@ export function simulateSinkingTrajectory(
       );
     }
     if (isEveryday) {
-      if (item.owner !== 'Stephen') return false;
+      if (item.owner !== 'Alex') return false;
       // Primary Salary Inflow
       if (item.id === 'S-01' || (item.direction === 'Inflow' && item.account_route === 'ING • Everyday')) return true;
       // Scheduled automated transfers departing Everyday to other joint/offset facilities
@@ -235,7 +235,7 @@ export function simulateSinkingTrajectory(
     const metrics = calculateMetrics(item.native_amount, item.cadence);
     if (metrics.weekly <= 0) return;
 
-    // For ING Everyday, Stephen salary is the master inflow!
+    // For ING Everyday, Alex salary is the master inflow!
     if (isEveryday) {
       if (item.id === 'S-01' || (item.direction === 'Inflow' && item.account_route === 'ING • Everyday')) {
         for (let w = 0; w < 52; w++) {
@@ -248,11 +248,11 @@ export function simulateSinkingTrajectory(
     // For BOQ Offset, only Inflow / Rent items are inflows into the offset
     if (item.account_route === 'BOQ • Home Offset') {
       if (item.direction === 'Inflow' || item.direction === 'Transfer') {
-        // Deduplicate Stephen rent if both S-02 (transfer) and H-03 (inflow) exist in relevantItems
+        // Deduplicate Alex rent if both S-02 (transfer) and H-03 (inflow) exist in relevantItems
         if (item.id === 'H-03' && relevantItems.some(i => i.id === 'S-02')) {
           return;
         }
-        const offset = item.owner === 'Shae' ? 0 : 1;
+        const offset = item.owner === 'Jordan' ? 0 : 1;
         if (item.cadence === 'Weekly') {
           for (let w = 0; w < 52; w++) weeks[w].inflows += item.native_amount;
         } else if (item.cadence === 'Fortnightly') {
@@ -266,8 +266,8 @@ export function simulateSinkingTrajectory(
 
     // For all dedicated reserve routes (ING Savings, MQ Joint Savings, MQ Joint Household, ING Direct Debit, etc.):
     // All items assigned to this route represent regular paycheck allocations feeding into this account!
-    // Stephen feeds weekly, Shae feeds fortnightly.
-    if (item.owner === 'Shae' && item.cadence === 'Fortnightly') {
+    // Alex feeds weekly, Jordan feeds fortnightly.
+    if (item.owner === 'Jordan' && item.cadence === 'Fortnightly') {
       for (let w = 0; w < 52; w++) {
         if (w % 2 === 0) weeks[w].inflows += item.native_amount;
       }
@@ -279,8 +279,8 @@ export function simulateSinkingTrajectory(
     }
   });
 
-  // For BOQ Home Offset (or ALL reserve aggregate), model Shae's planned mortgage contribution.
-  // Stephen's rent funds his agreed portion, and Shae funds the remaining balance of the
+  // For BOQ Home Offset (or ALL reserve aggregate), model Jordan's planned mortgage contribution.
+  // Alex's rent funds his agreed portion, and Jordan funds the remaining balance of the
   // contractual P&I mortgage repayment ($1,240.79/fn) from her salary so the offset facility does not hemorrhage cash.
   if (selectedRoute === 'BOQ • Home Offset' || isAll) {
     const boqMortgage = relevantItems.find(i => 
@@ -289,20 +289,20 @@ export function simulateSinkingTrajectory(
       i.description.toLowerCase().includes('mortgage')
     );
     if (boqMortgage) {
-      const stephenRentItem = relevantItems.find(i => 
+      const alexRentItem = relevantItems.find(i => 
         i.account_route === 'BOQ • Home Offset' && 
-        (i.id === 'S-02' || (i.owner === 'Stephen' && (i.direction === 'Transfer' || i.direction === 'Inflow')))
+        (i.id === 'S-02' || (i.owner === 'Alex' && (i.direction === 'Transfer' || i.direction === 'Inflow')))
       );
-      const stephenWeeklyRent = stephenRentItem 
-        ? calculateMetrics(stephenRentItem.native_amount, stephenRentItem.cadence).weekly 
+      const alexWeeklyRent = alexRentItem 
+        ? calculateMetrics(alexRentItem.native_amount, alexRentItem.cadence).weekly 
         : 150;
-      const stephenFortnightlyRent = stephenWeeklyRent * 2;
-      const shaeMortgageShare = Math.max(0, boqMortgage.native_amount - stephenFortnightlyRent);
+      const alexFortnightlyRent = alexWeeklyRent * 2;
+      const jordanMortgageShare = Math.max(0, boqMortgage.native_amount - alexFortnightlyRent);
 
-      if (shaeMortgageShare > 0) {
+      if (jordanMortgageShare > 0) {
         for (let w = 0; w < 52; w++) {
-          if (w % 2 === 0) { // Shae's fortnightly pay cycle
-            weeks[w].inflows += shaeMortgageShare;
+          if (w % 2 === 0) { // Jordan's fortnightly pay cycle
+            weeks[w].inflows += jordanMortgageShare;
           }
         }
       }
@@ -337,7 +337,7 @@ export function simulateSinkingTrajectory(
     const metrics = calculateMetrics(item.native_amount, item.cadence);
     if (metrics.weekly <= 0) return;
 
-    // If an item is pure long-term savings retention (e.g. House Deposit Core S-06 / H-08, Shae Personal Savings H-32, Stephen Discretionary Allowance S-38),
+    // If an item is pure long-term savings retention (e.g. House Deposit Core S-06 / H-08, Jordan Personal Savings H-32, Alex Discretionary Allowance S-38),
     // it stays in the account and does NOT debit as a bill outflow, UNLESS this is ING Everyday where transfers depart the account!
     if (!isEveryday && (
       descLower.includes('house deposit core') || 
@@ -359,8 +359,8 @@ export function simulateSinkingTrajectory(
     // If this is a joint household bill on Joint Savings or ALL, ensure each unique bill is processed once as the unified invoice
     if (sinkingInfo.isJointHouseholdBill) {
       const rootKey = item.description
-        .replace(/\s*\(Stephen\s*Share\)/i, '')
-        .replace(/\s*\(Shae\s*Share\)/i, '')
+        .replace(/\s*\(Alex\s*Share\)/i, '')
+        .replace(/\s*\(Jordan\s*Share\)/i, '')
         .replace(/\s*\(Joint\s*Share\)/i, '')
         .toLowerCase()
         .trim();
@@ -370,19 +370,19 @@ export function simulateSinkingTrajectory(
 
     const anchorMonth = getDefaultDueMonth(item);
 
-    // Helper to add event to week, consolidating split shares (e.g. Stephen Share + Shae Share) into a single invoice entry
+    // Helper to add event to week, consolidating split shares (e.g. Alex Share + Jordan Share) into a single invoice entry
     const recordEvent = (wIndex: number, cadence: string, amount: number) => {
       weeks[wIndex].outflows += amount;
       const rootDesc = item.description
-        .replace(/\s*\(Stephen\s*Share\)/i, '')
-        .replace(/\s*\(Shae\s*Share\)/i, '')
+        .replace(/\s*\(Alex\s*Share\)/i, '')
+        .replace(/\s*\(Jordan\s*Share\)/i, '')
         .replace(/\s*\(Joint\s*Share\)/i, '')
         .trim();
       
       const existingEv = weeks[wIndex].events.find(e => {
         const existingRoot = e.description
-          .replace(/\s*\(Stephen\s*Share\)/i, '')
-          .replace(/\s*\(Shae\s*Share\)/i, '')
+          .replace(/\s*\(Alex\s*Share\)/i, '')
+          .replace(/\s*\(Jordan\s*Share\)/i, '')
           .replace(/\s*\(Joint\s*Share\)/i, '')
           .trim();
         return existingRoot.toLowerCase() === rootDesc.toLowerCase();
@@ -453,7 +453,7 @@ export function simulateSinkingTrajectory(
       if (item.cadence === 'Weekly') {
         for (let w = 0; w < 52; w++) weeks[w].outflows += item.native_amount;
       } else if (item.cadence === 'Fortnightly') {
-        const offset = item.owner === 'Shae' ? 0 : 1;
+        const offset = item.owner === 'Jordan' ? 0 : 1;
         for (let w = 0; w < 52; w++) {
           if (w % 2 === offset) weeks[w].outflows += item.native_amount;
         }
@@ -508,8 +508,8 @@ export function simulateSinkingTrajectory(
   // Helper to extract clean bill title without split share suffixes
   const getRootBillName = (desc: string): string => {
     return desc
-      .replace(/\s*\(Stephen\s*Share\)/i, '')
-      .replace(/\s*\(Shae\s*Share\)/i, '')
+      .replace(/\s*\(Alex\s*Share\)/i, '')
+      .replace(/\s*\(Jordan\s*Share\)/i, '')
       .replace(/\s*\(Joint\s*Share\)/i, '')
       .trim();
   };

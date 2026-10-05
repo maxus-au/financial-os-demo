@@ -86,25 +86,25 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
   const matrixSectionRef = useRef<HTMLDivElement>(null);
 
   // 1. Calculate True Verified Inflows & Outflows from master.json
-  let stephenInflowW = 0, stephenOutflowW = 0;
-  let shaeInflowW = 0, shaeOutflowW = 0;
+  let alexInflowW = 0, alexOutflowW = 0;
+  let jordanInflowW = 0, jordanOutflowW = 0;
 
   items.forEach(item => {
     const metrics = calculateMetrics(item.native_amount, item.cadence);
     const isIncome = (item.category || '').toLowerCase().includes('income');
     
-    if (item.owner === 'Stephen') {
-      if (isIncome) stephenInflowW += metrics.weekly;
-      else stephenOutflowW += metrics.weekly;
-    } else if (item.owner === 'Shae') {
-      if (isIncome) shaeInflowW += metrics.weekly;
-      else shaeOutflowW += metrics.weekly;
+    if (item.owner === 'Alex') {
+      if (isIncome) alexInflowW += metrics.weekly;
+      else alexOutflowW += metrics.weekly;
+    } else if (item.owner === 'Jordan') {
+      if (isIncome) jordanInflowW += metrics.weekly;
+      else jordanOutflowW += metrics.weekly;
     }
   });
 
-  const stephenSurplusW = stephenInflowW - stephenOutflowW;
-  const shaeSurplusW = shaeInflowW - shaeOutflowW;
-  const combinedSurplusW = stephenSurplusW + shaeSurplusW;
+  const alexSurplusW = alexInflowW - alexOutflowW;
+  const jordanSurplusW = jordanInflowW - jordanOutflowW;
+  const combinedSurplusW = alexSurplusW + jordanSurplusW;
   
   // Note: The email assumed ~$700/wk savings. Our engine uses the strict JSON reality.
   const varianceFromEmail = combinedSurplusW - 700;
@@ -200,10 +200,10 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
   };
 
   // Quick Star Rating Toggle directly on card
-  const handleQuickRating = async (prop: ProspectiveProperty, targetActor: 'Stephen' | 'Shae', newRating: number) => {
+  const handleQuickRating = async (prop: ProspectiveProperty, targetActor: 'Alex' | 'Jordan', newRating: number) => {
     if (isLocked) return;
-    const key = targetActor === 'Stephen' ? 'rating_stephen' : 'rating_shae';
-    const currentVal = targetActor === 'Stephen' ? prop.rating_stephen : prop.rating_shae;
+    const key = targetActor === 'Alex' ? 'rating_alex' : 'rating_jordan';
+    const currentVal = targetActor === 'Alex' ? prop.rating_alex : prop.rating_jordan;
     const finalVal = currentVal === newRating ? 0 : newRating;
 
     if (isDemo) {
@@ -254,8 +254,8 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
       })
       .sort((a, b) => {
         if (sortBy === 'rating') {
-          const totalA = (a.rating_stephen || 0) + (a.rating_shae || 0);
-          const totalB = (b.rating_stephen || 0) + (b.rating_shae || 0);
+          const totalA = (a.rating_alex || 0) + (a.rating_jordan || 0);
+          const totalB = (b.rating_alex || 0) + (b.rating_jordan || 0);
           return totalB - totalA;
         }
         if (sortBy === 'price-asc') return a.guide_price - b.guide_price;
@@ -489,7 +489,7 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
             <p className="text-xs text-muted-foreground max-w-md mx-auto">
               {searchQuery || statusFilter !== 'ALL'
                 ? 'Try clearing your search query or status filter to see all shortlisted homes.'
-                : 'Frictionlessly triage homes shared by Shae via WhatsApp by clicking "+ Triage WhatsApp Listing" above.'}
+                : 'Frictionlessly triage homes shared by Jordan via WhatsApp by clicking "+ Triage WhatsApp Listing" above.'}
             </p>
             <Button
               onClick={() => {
@@ -624,17 +624,17 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
                       </div>
                     )}
 
-                    {/* Dual Star Ratings: Stephen & Shae */}
+                    {/* Dual Star Ratings: Alex & Jordan */}
                     <div className="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-muted/30 border border-border/80">
-                      {/* Stephen Stars */}
+                      {/* Alex Stars */}
                       <div className="space-y-1">
                         <div className="flex items-center justify-between text-[11px] text-muted-foreground">
                           <span className="flex items-center gap-1 font-medium">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            Stephen
+                            Alex
                           </span>
                           <span className="font-mono text-foreground font-semibold">
-                            {prop.rating_stephen || 0}/5
+                            {prop.rating_alex || 0}/5
                           </span>
                         </div>
                         <div className="flex items-center gap-0.5">
@@ -642,14 +642,14 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
                             <button
                               key={star}
                               type="button"
-                              onClick={() => handleQuickRating(prop, 'Stephen', star)}
+                              onClick={() => handleQuickRating(prop, 'Alex', star)}
                               disabled={isLocked}
                               className={`p-0.5 transition-colors ${isLocked ? 'cursor-default' : 'cursor-pointer hover:text-amber-400'}`}
-                              title={`Set Stephen's rating to ${star} stars`}
+                              title={`Set Alex's rating to ${star} stars`}
                             >
                               <Star
                                 className={`w-3.5 h-3.5 ${
-                                   star <= (prop.rating_stephen || 0)
+                                   star <= (prop.rating_alex || 0)
                                     ? 'text-amber-400 fill-amber-400'
                                     : 'text-muted-foreground/30'
                                 }`}
@@ -659,15 +659,15 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
                         </div>
                       </div>
 
-                      {/* Shae Stars */}
+                      {/* Jordan Stars */}
                       <div className="space-y-1">
                         <div className="flex items-center justify-between text-[11px] text-muted-foreground">
                           <span className="flex items-center gap-1 font-medium">
                             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                            Shae
+                            Jordan
                           </span>
                           <span className="font-mono text-foreground font-semibold">
-                            {prop.rating_shae || 0}/5
+                            {prop.rating_jordan || 0}/5
                           </span>
                         </div>
                         <div className="flex items-center gap-0.5">
@@ -675,14 +675,14 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
                             <button
                               key={star}
                               type="button"
-                              onClick={() => handleQuickRating(prop, 'Shae', star)}
+                              onClick={() => handleQuickRating(prop, 'Jordan', star)}
                               disabled={isLocked}
                               className={`p-0.5 transition-colors ${isLocked ? 'cursor-default' : 'cursor-pointer hover:text-rose-400'}`}
-                              title={`Set Shae's rating to ${star} stars`}
+                              title={`Set Jordan's rating to ${star} stars`}
                             >
                               <Star
                                 className={`w-3.5 h-3.5 ${
-                                  star <= (prop.rating_shae || 0)
+                                  star <= (prop.rating_jordan || 0)
                                     ? 'text-rose-400 fill-rose-400'
                                     : 'text-muted-foreground/30'
                                 }`}
@@ -779,25 +779,25 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 rounded-xl bg-muted/30 border border-border text-center">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                Stephen True Surplus
+                Alex True Surplus
               </div>
               <div className="text-2xl font-bold font-mono text-foreground">
-                {formatCurrency(stephenSurplusW)} <span className="text-xs font-sans text-muted-foreground font-normal">/ wk</span>
+                {formatCurrency(alexSurplusW)} <span className="text-xs font-sans text-muted-foreground font-normal">/ wk</span>
               </div>
               <div className="text-[11px] font-mono text-muted-foreground/80 mt-1">
-                ({formatCurrency(stephenSurplusW * 52)} / yr)
+                ({formatCurrency(alexSurplusW * 52)} / yr)
               </div>
             </div>
 
             <div className="p-4 rounded-xl bg-muted/30 border border-border text-center">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                Shae True Surplus
+                Jordan True Surplus
               </div>
               <div className="text-2xl font-bold font-mono text-foreground">
-                {formatCurrency(shaeSurplusW)} <span className="text-xs font-sans text-muted-foreground font-normal">/ wk</span>
+                {formatCurrency(jordanSurplusW)} <span className="text-xs font-sans text-muted-foreground font-normal">/ wk</span>
               </div>
               <div className="text-[11px] font-mono text-muted-foreground/80 mt-1">
-                ({formatCurrency(shaeSurplusW * 52)} / yr)
+                ({formatCurrency(jordanSurplusW * 52)} / yr)
               </div>
             </div>
 
@@ -835,7 +835,7 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
               Cash Pool Trajectory & Accumulation
             </h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Starting Base: <strong className="text-foreground font-mono">{formatCurrency(INITIAL_CASH)}</strong> (Stephen Offset Capital) • Growth: <strong className="text-emerald-500 font-mono">+{formatCurrency(combinedSurplusW)}/wk</strong>
+              Starting Base: <strong className="text-foreground font-mono">{formatCurrency(INITIAL_CASH)}</strong> (Alex Offset Capital) • Growth: <strong className="text-emerald-500 font-mono">+{formatCurrency(combinedSurplusW)}/wk</strong>
             </p>
           </div>
           <Badge variant="outline" className="text-[10px] font-mono border-blue-500/30 text-blue-500 dark:text-blue-400 bg-blue-500/10 self-start sm:self-auto">
@@ -977,14 +977,14 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-bold">
                         <CheckCircle2 className="w-4 h-4" />
-                        <span>Expected Equity: 60% Stephen / 40% Shae</span>
+                        <span>Expected Equity: 60% Alex / 40% Jordan</span>
                       </div>
                       <Badge className="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-[10px] font-mono">
                         Fully Funded Today
                       </Badge>
                     </div>
                     <p className="text-muted-foreground text-[11px] leading-relaxed">
-                      Standard condition met: Stephen funds 100% of upfront cash ({formatCurrency(cashNeeded)}) from BOQ offset reserves with a +{formatCurrency(buffer)} surplus cushion remaining.
+                      Standard condition met: Alex funds 100% of upfront cash ({formatCurrency(cashNeeded)}) from BOQ offset reserves with a +{formatCurrency(buffer)} surplus cushion remaining.
                     </p>
                   </div>
                 );
@@ -1017,9 +1017,9 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
                     {shortfall <= 25000 && (
                       <>
                         <div className="flex items-start gap-1.5">
-                          <span className="font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">🪙 Kraken Crypto Injection:</span>
+                          <span className="font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">🪙 Crypto Exchange Crypto Injection:</span>
                           <span>
-                            Deploy Stephen's liquid Kraken crypto holdings (~$20k–$25k AUD) to immediately bridge the {formatCurrency(shortfall)} gap today, preserving the agreed <strong>60% Stephen / 40% Shae</strong> ownership with zero external debt.
+                            Deploy Alex's liquid Crypto Exchange crypto holdings (~$20k–$25k AUD) to immediately bridge the {formatCurrency(shortfall)} gap today, preserving the agreed <strong>60% Alex / 40% Jordan</strong> ownership with zero external debt.
                           </span>
                         </div>
                         <div className="flex items-start gap-1.5">
@@ -1034,15 +1034,15 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
                     {shortfall > 25000 && shortfall < 50000 && (
                       <>
                         <div className="flex items-start gap-1.5">
-                          <span className="font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">🪙 Kraken + Cash Flow:</span>
+                          <span className="font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">🪙 Crypto Exchange + Cash Flow:</span>
                           <span>
-                            Deploy $20,000 from Kraken crypto, leaving only {formatCurrency(shortfall - 20000)} to save organically in ~{Math.ceil((shortfall - 20000) / combinedSurplusW)} weeks.
+                            Deploy $20,000 from Crypto Exchange crypto, leaving only {formatCurrency(shortfall - 20000)} to save organically in ~{Math.ceil((shortfall - 20000) / combinedSurplusW)} weeks.
                           </span>
                         </div>
                         <div className="flex items-start gap-1.5">
-                          <span className="font-semibold text-blue-600 dark:text-blue-400 shrink-0">🏦 Shae Equity Facility:</span>
+                          <span className="font-semibold text-blue-600 dark:text-blue-400 shrink-0">🏦 Jordan Equity Facility:</span>
                           <span>
-                            Shae accesses existing property equity / refinancing line to contribute {formatCurrency(shortfall)}, adjusting equity proportionally or agreeing to an initial capital credit.
+                            Jordan accesses existing property equity / refinancing line to contribute {formatCurrency(shortfall)}, adjusting equity proportionally or agreeing to an initial capital credit.
                           </span>
                         </div>
                       </>
@@ -1051,15 +1051,15 @@ export default function PropertyEngine({ items, sessionActor, isLocked }: Props)
                     {shortfall >= 50000 && (
                       <>
                         <div className="flex items-start gap-1.5">
-                          <span className="font-semibold text-purple-600 dark:text-purple-400 shrink-0">🏦 Shae Equity Release:</span>
+                          <span className="font-semibold text-purple-600 dark:text-purple-400 shrink-0">🏦 Jordan Equity Release:</span>
                           <span>
-                            Draw $50k+ from Shae's existing property equity or loan redraw to fund the {formatCurrency(shortfall)} deposit balance.
+                            Draw $50k+ from Jordan's existing property equity or loan redraw to fund the {formatCurrency(shortfall)} deposit balance.
                           </span>
                         </div>
                         <div className="flex items-start gap-1.5">
                           <span className="font-semibold text-foreground shrink-0">🤝 Proportional Split:</span>
                           <span>
-                            Recalibrate ownership (e.g. <strong>50/50</strong> or <strong>55/45</strong> with capital protection agreement) reflecting Shae's significant upfront deposit contribution.
+                            Recalibrate ownership (e.g. <strong>50/50</strong> or <strong>55/45</strong> with capital protection agreement) reflecting Jordan's significant upfront deposit contribution.
                           </span>
                         </div>
                         <div className="flex items-start gap-1.5">

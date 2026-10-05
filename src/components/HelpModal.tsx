@@ -210,8 +210,8 @@ export default function HelpModal({ onClose }: Props) {
                 <div className="p-2 rounded bg-zinc-900/80 border border-zinc-800 flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-rose-400 shrink-0" />
                   <div>
-                    <div className="font-semibold text-zinc-200">MQ Shae Personal / Savings</div>
-                    <div className="text-zinc-500 text-[10px]">Shae discretionary & buffer</div>
+                    <div className="font-semibold text-zinc-200">MQ Jordan Personal / Savings</div>
+                    <div className="text-zinc-500 text-[10px]">Jordan discretionary & buffer</div>
                   </div>
                 </div>
                 <div className="p-2 rounded bg-zinc-900/80 border border-zinc-800 flex items-center gap-2">
@@ -232,7 +232,7 @@ export default function HelpModal({ onClose }: Props) {
                   <span className="text-emerald-400">1.</span> The Sinking Fund Timing Paradox
                 </div>
                 <p className="text-zinc-400 leading-relaxed text-[11px]">
-                  Weekly allocations (e.g. BMW Rego \$21/wk = \$1,092/yr) only maintain liquidity in steady state. If a \$1,092 lump-sum debit hits in month 2 before 52 weeks have accumulated, the account drops into negative cash (overdraft) unless seeded with a buffer.
+                  Weekly allocations (e.g. Car Rego \$21/wk = \$1,092/yr) only maintain liquidity in steady state. If a \$1,092 lump-sum debit hits in month 2 before 52 weeks have accumulated, the account drops into negative cash (overdraft) unless seeded with a buffer.
                 </p>
               </div>
 
@@ -250,7 +250,7 @@ export default function HelpModal({ onClose }: Props) {
                   <span className="text-emerald-400">3.</span> BOQ Home Offset Mortgage Shield Modeling
                 </div>
                 <p className="text-zinc-400 leading-relaxed text-[11px]">
-                  Models the full household mortgage reality: pairs Stephen's rent transfers with Shae's planned mortgage offset contribution to fully fund the $1,240.79/fn loan repayment. The offset balance acts as an interest-saving shield without artificial overdraft drift.
+                  Models the full household mortgage reality: pairs Alex's rent transfers with Jordan's planned mortgage offset contribution to fully fund the $1,240.79/fn loan repayment. The offset balance acts as an interest-saving shield without artificial overdraft drift.
                 </p>
               </div>
 
@@ -268,7 +268,7 @@ export default function HelpModal({ onClose }: Props) {
                   <span className="text-emerald-400">5.</span> ING Everyday (Salary Hub) Modeling
                 </div>
                 <p className="text-zinc-400 leading-relaxed text-[11px]">
-                  Simulates Stephen's master salary account: tracks $1,489.08/wk salary inflow against automated transfers departing to joint accounts, savings, and BOQ (-$760.73/wk), plus everyday direct debits and card spend. Visualizes weekly unallocated operational surplus (~+$320.17/wk).
+                  Simulates Alex's master salary account: tracks $1,489.08/wk salary inflow against automated transfers departing to joint accounts, savings, and BOQ (-$760.73/wk), plus everyday direct debits and card spend. Visualizes weekly unallocated operational surplus (~+$320.17/wk).
                 </p>
               </div>
             </div>
@@ -287,10 +287,10 @@ export default function HelpModal({ onClose }: Props) {
 
               <div className="p-3 rounded-lg bg-zinc-900/80 border border-zinc-800 space-y-1.5">
                 <div className="font-semibold text-zinc-100 flex items-center gap-1.5">
-                  <span className="text-emerald-400">2.</span> Dual Independent Star Ratings (Stephen & Shae)
+                  <span className="text-emerald-400">2.</span> Dual Independent Star Ratings (Alex & Jordan)
                 </div>
                 <p className="text-zinc-400 leading-relaxed text-[11px]">
-                  Both Stephen and Shae have independent 5-star rating controls on each shortlisted property. Stars can be tapped directly on the property card or edited in the intake modal, with real-time persistence to <code>data/properties.json</code>.
+                  Both Alex and Jordan have independent 5-star rating controls on each shortlisted property. Stars can be tapped directly on the property card or edited in the intake modal, with real-time persistence to <code>data/properties.json</code>.
                 </p>
               </div>
 
@@ -338,7 +338,7 @@ export default function HelpModal({ onClose }: Props) {
                     <span>Toggle Actor</span>
                     <span className="text-[10px] font-mono text-emerald-400">1-Click Dock</span>
                   </div>
-                  <p className="text-zinc-400 text-[11px]">Clicking the dock actor pill swaps between Stephen and Shae.</p>
+                  <p className="text-zinc-400 text-[11px]">Clicking the dock actor pill swaps between Alex and Jordan.</p>
                 </div>
                 <div className="p-2.5 rounded-lg bg-zinc-900/80 border border-zinc-800 space-y-1">
                   <div className="font-semibold text-zinc-200 flex items-center justify-between">

@@ -222,11 +222,11 @@ export function estimateHoldingBurn(price: number): HoldingBurnEstimate {
 
 /**
  * Formats property addresses with Suburb leading first in prominent typography,
- * stripping redundant "QLD" as Gold Coast is authoritative, while preserving non-QLD states if ever present.
+ * stripping redundant "QLD" as Metro City is authoritative, while preserving non-QLD states if ever present.
  */
 export function formatPropertyAddress(address: string): { suburb: string; street: string; cleanAddress: string } {
   if (!address || !address.trim()) {
-    return { suburb: 'Gold Coast', street: '', cleanAddress: '' };
+    return { suburb: 'Metro City', street: '', cleanAddress: '' };
   }
 
   // Strip ", QLD" or " QLD" or " QLD 4217"
@@ -235,7 +235,7 @@ export function formatPropertyAddress(address: string): { suburb: string; street
     .replace(/\s+(?:QLD|Qld)(?:\s+\d{4})?/gi, '')
     .trim();
 
-  // If address has comma, e.g. "68 Paddington Drive, Carrara"
+  // If address has comma, e.g. "68 Paddington Drive, Riverdale"
   if (clean.includes(',')) {
     const parts = clean.split(',').map(s => s.trim()).filter(Boolean);
     if (parts.length >= 2) {
@@ -279,8 +279,8 @@ export function parsePropertySnippet(rawText: string): Partial<ProspectiveProper
   const result: Partial<ProspectiveProperty> = {
     source_snippet: rawText,
     status: 'Watching' as PropertyStatus,
-    rating_stephen: 0,
-    rating_shae: 0,
+    rating_alex: 0,
+    rating_jordan: 0,
   };
 
   if (!rawText || !rawText.trim()) return result;

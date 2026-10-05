@@ -81,7 +81,7 @@ export default function ClosingCostsModal({
       icon: <Droplets className="w-4 h-4 text-cyan-500" />,
       category: 'Pro-Rata Adjustment',
       badgeClass: 'bg-cyan-500/15 text-cyan-500 dark:text-cyan-400 border-cyan-500/30',
-      description: 'Standard pro-rata adjustments payable to vendor for pre-paid Gold Coast City Council rates and bulk water access at settlement day.',
+      description: 'Standard pro-rata adjustments payable to vendor for pre-paid Metro City City Council rates and bulk water access at settlement day.',
     },
   ];
 

@@ -21,18 +21,18 @@ import './App.css';
 
 function App() {
   const isDemo = isDemoMode();
-  const defaultActor = isDemo ? 'Alex' : 'Stephen';
-  const partnerActor = isDemo ? 'Jordan' : 'Shae';
+  const defaultActor = isDemo ? 'Alex' : 'Alex';
+  const partnerActor = isDemo ? 'Jordan' : 'Jordan';
 
   const [sessionActor, setSessionActor] = useState<string | null>(() => {
-    const stored = localStorage.getItem('maxwell_session_actor');
-    if (isDemo && (stored === 'Stephen' || !stored)) return 'Alex';
+    const stored = localStorage.getItem('demo_session_actor');
+    if (isDemo && (stored === 'Alex' || !stored)) return 'Alex';
     return stored || defaultActor;
   });
-  const [activeTab, setActiveTab] = useState<'Stephen' | 'Shae' | 'Property' | 'Sinking'>(() => {
-    const stored = localStorage.getItem('maxwell_session_actor') as any;
-    if (isDemo && (stored === 'Stephen' || !stored)) return 'Stephen'; // Note: Stephen tab maps to Alex
-    return stored || 'Stephen';
+  const [activeTab, setActiveTab] = useState<'Alex' | 'Jordan' | 'Property' | 'Sinking'>(() => {
+    const stored = localStorage.getItem('demo_session_actor') as any;
+    if (isDemo && (stored === 'Alex' || !stored)) return 'Alex'; // Note: Alex tab maps to Alex
+    return stored || 'Alex';
   });
   const [isLocked, setIsLocked] = useState<boolean>(true);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
@@ -42,8 +42,8 @@ function App() {
 
   const handleSelectActor = (actor: string) => {
     setSessionActor(actor);
-    setActiveTab(actor === 'Jordan' || actor === 'Shae' ? 'Shae' : 'Stephen');
-    localStorage.setItem('maxwell_session_actor', actor);
+    setActiveTab(actor === 'Jordan' || actor === 'Jordan' ? 'Jordan' : 'Alex');
+    localStorage.setItem('demo_session_actor', actor);
   };
 
   const handleToggleActor = () => {
@@ -363,7 +363,7 @@ function App() {
             </button>
             <button 
               className="px-1.5 py-0.5 rounded border border-zinc-800 text-zinc-500 hover:text-zinc-400 hover:bg-zinc-800 text-[10px] transition-colors cursor-pointer" 
-              onClick={() => { setSessionActor(null); localStorage.removeItem('maxwell_session_actor'); }}
+              onClick={() => { setSessionActor(null); localStorage.removeItem('demo_session_actor'); }}
               title="Lock session and show Gateway"
             >
               Gateway
@@ -374,12 +374,12 @@ function App() {
       
       <header className="app-header">
         <div className="header-content">
-          <h1>{isDemo ? 'Couple Financial OS & Property Engine' : 'Maxwell Property & Cash Flow Engine'}</h1>
+          <h1>{isDemo ? 'Couple Financial OS & Property Engine' : 'Demo Property & Cash Flow Engine'}</h1>
           <p className="subtitle">Real-Time Cash Flow, Sinking Funds & Settlement Readiness</p>
         </div>
         <div className="tabs">
-          <button className={activeTab === 'Stephen' ? 'active' : ''} onClick={() => setActiveTab('Stephen')}>{defaultActor} Dashboard</button>
-          <button className={activeTab === 'Shae' ? 'active' : ''} onClick={() => setActiveTab('Shae')}>{partnerActor} Dashboard</button>
+          <button className={activeTab === 'Alex' ? 'active' : ''} onClick={() => setActiveTab('Alex')}>{defaultActor} Dashboard</button>
+          <button className={activeTab === 'Jordan' ? 'active' : ''} onClick={() => setActiveTab('Jordan')}>{partnerActor} Dashboard</button>
           <button className={activeTab === 'Property' ? 'active' : ''} onClick={() => setActiveTab('Property')} style={{color: activeTab === 'Property' ? '#059669' : '', borderBottomColor: activeTab === 'Property' ? '#059669' : ''}}>Property Engine</button>
           <button className={activeTab === 'Sinking' ? 'active' : ''} onClick={() => setActiveTab('Sinking')} style={{color: activeTab === 'Sinking' ? '#10b981' : '', borderBottomColor: activeTab === 'Sinking' ? '#10b981' : ''}}>Sinking & Liquidity</button>
         </div>
@@ -391,9 +391,9 @@ function App() {
             <SinkingFundEngine items={data} onUpdateItem={handleUpdateItem} isLocked={isLocked} />
         ) : (
             <ItemGrid 
-              items={data.filter(item => isDemo ? (activeTab === 'Stephen' ? item.owner === 'Alex' : item.owner === 'Jordan') : (item.owner === activeTab))} 
+              items={data.filter(item => isDemo ? (activeTab === 'Alex' ? item.owner === 'Alex' : item.owner === 'Jordan') : (item.owner === activeTab))} 
               baselines={baselines} 
-              owner={isDemo ? (activeTab === 'Stephen' ? 'Alex' : 'Jordan') : activeTab} 
+              owner={isDemo ? (activeTab === 'Alex' ? 'Alex' : 'Jordan') : activeTab} 
               isLocked={isLocked}
               onUpdate={handleUpdateItem} 
               onRevert={handleRevert}
